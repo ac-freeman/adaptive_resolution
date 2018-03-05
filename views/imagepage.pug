@@ -1,0 +1,21 @@
+extends layout
+
+block scripts
+  script( src="http://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous")
+  script(type='text/javascript').
+    var local_data = !{JSON.stringify(name)};
+  script(type='text/javascript').
+    var imgShape = !{JSON.stringify(imgShape)};
+  script(src='/javascripts/clientshowimage.js')
+
+
+
+block content
+  h1= title
+  p Welcome to #{title}
+  div
+    canvas#original
+    #div2
+        h2 Let jQuery AJAX Change This Text
