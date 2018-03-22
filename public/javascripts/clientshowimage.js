@@ -1,30 +1,154 @@
-document.write("5 + 6");
+// document.write("5 + 6");
+
+// $('#img').attr('src', "/img2");
+
+// $.ajax({
+//   url: "/img2",
+//   type: "get", //send it through get method
+//   data: {
+//     ajaxid: 43210,
+//   },
+//   success: function(response) {
+//     console.log('ajax success!');
+//     //Do Something
+//     loadImage2(response);
+//   },
+//   error: function(xhr) {
+//     //Do Something to handle error
+//     console.log('ajax FAIL');
+//   }
+// });
 
 
-function getImageFromServer(callback) {
-  $(document).ready(function(){
-    $.ajax({
-      type: "GET",
-      url: "/img1",
-      dataType: "text",
-      success: function(result){
-      console.log("TRYING TO SET DIV")
-    // $("#div2").html(result);
-    callback(result);
-    }});
-    });
-}
 
-getImageFromServer( function (imageData) {
-  console.log("Response length: " + imageData.length);
-  console.log(imageData);
 
-  loadImage(imageData);
-  loadImage(imageData);
-  loadImage(imageData);
-  loadImage(imageData);
-  loadImage(imageData);
-});
+var data = {};
+					data.width = parseInt(0.9 * $(window).height());   // returns height of browser viewport
+					data.height = parseInt(0.9 * $(window).width());
+
+var xhr = new XMLHttpRequest();
+xhr.open('POST', '/img2', true);
+//Send the proper header information along with the request
+// xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+xhr.responseType = 'blob';
+
+xhr.onload = function(e) {
+  if (this.status == 200) {
+    var blob = this.response;
+
+    var img = document.createElement('img');
+    img.onload = function(e) {
+      window.URL.revokeObjectURL(img.src); // Clean up after yourself.
+    };
+    img.src = window.URL.createObjectURL(blob);
+    document.body.appendChild(img);
+
+  }
+};
+
+xhr.send(JSON.stringify(data));
+
+
+
+
+//
+// function loadImage2(imgg) {
+//   console.log('in load image 2');
+// // create an offscreen canvas
+// var canvas=document.createElement("canvas");
+//
+// var ctx=canvas.getContext("2d");
+//
+// // size the canvas to your desired image
+// canvas.width=400;
+// canvas.height=800;
+//
+// // get the imageData and pixel array from the canvas
+// var canvasData=ctx.getImageData(0,0,canvas.width,canvas.height);
+// var data=canvasData.data;
+
+
+// for(var j = 0; j < localimg2.length; j+=1){
+//   var px = localimg2[j];
+//   if(j == 0) {
+//     console.log("pixel length: " + px.length);
+//   }
+//       data[j*4 ]= px[0];   // set every red pixel element to 255
+//       data[j*4 + 1] = px[1];
+//       data[j*4 + 2] = px[2];
+//       data[j*4 + 3]=255; // make this pixel opaque
+// }
+// manipulate some pixel elements
+// acount = 0;
+// for(var i=0;i<data.length;i+=4){
+//   // var px = localimg2[i];
+//   // console.log(px.length)
+//   data[i]= imageDataIntArray[i-acount];
+//   data[i+1] = imageDataIntArray[i+1-acount];
+//   data[i+2] = imageDataIntArray[i+2-acount];
+//   data[i+3]=255; // make this pixel opaque
+//   acount+=1;
+// }
+
+// put the modified pixels back on the canvas
+// ctx.putImageData(canvasData,0,0);
+// ctx.putImageData(localimg,0,0);
+
+// create a new img object
+// var image=new Image();
+//
+// // set the img.src to the canvas data url
+// image.src=imgg;
+//
+//
+// // append the new img object to the page
+// document.body.appendChild(image);
+//
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function getImageFromServer(callback) {
+//   $(document).ready(function(){
+//     $.ajax({
+//       type: "GET",
+//       url: "/img2",
+//       dataType: "file",
+//       success: function(result){
+//       console.log("TRYING TO SET DIV")
+//     // $("#div2").html(result);
+//     callback(result);
+//     }});
+//     });
+// }
+// var aaa;
+// getImageFromServer(aaa);
+// console.log(aaa);
+
+/////////////////////////////////
+// getImageFromServer( function (imageData) {
+//   console.log("Response length: " + imageData.length);
+//   console.log(imageData);
+//
+//   loadImage(imageData);
+// });
+/////////////////////////////////
 
 // var responseArray;
 // /////Has problems reading into decimal?
@@ -70,30 +194,30 @@ getImageFromServer( function (imageData) {
 
 // loadImage();
 
- function flatten(arr, result = []) {
-  for (let i = 0, length = arr.length; i < length; i++) {
-    const value = arr[i];
-    if (Array.isArray(value)) {
-      flatten(value, result);
-    } else {
-      result.push(value);
-    }
-  }
-  return result;
-};
-
-
-function loadImage( imageData ) {
-
-  var imageDataArray = imageData.match(new RegExp('.{1,' + 2 + '}', 'g'));
-  var imageDataIntArray = new Uint8Array(imageDataArray.length);
-  for (let i = 0, length = imageDataArray.length; i < length; i++) {
-    imageDataIntArray[i] = parseInt(imageDataArray[i], 16);
-  }
-  console.log(imageDataIntArray);
-
-  var shape = [ imageDataIntArray.length, imageDataIntArray[0].length ];
-  console.log(imgShape);
+//  function flatten(arr, result = []) {
+//   for (let i = 0, length = arr.length; i < length; i++) {
+//     const value = arr[i];
+//     if (Array.isArray(value)) {
+//       flatten(value, result);
+//     } else {
+//       result.push(value);
+//     }
+//   }
+//   return result;
+// };
+//
+//
+// function loadImage( imageData ) {
+//
+//   var imageDataArray = imageData.match(new RegExp('.{1,' + 2 + '}', 'g'));
+//   var imageDataIntArray = new Uint8Array(imageDataArray.length);
+//   for (let i = 0, length = imageDataArray.length; i < length; i++) {
+//     imageDataIntArray[i] = parseInt(imageDataArray[i], 16);
+//   }
+//   console.log(imageDataIntArray);
+//
+//   var shape = [ imageDataIntArray.length, imageDataIntArray[0].length ];
+//   console.log(imgShape);
 
 
 
@@ -121,7 +245,7 @@ function loadImage( imageData ) {
     // var duration = new Date().valueOf() - start;
 
     // display images in canvas
-    var $original = document.getElementById('original');
+    // var $original = document.getElementById('original');
 
     // // $original.width = W; $original.height = H;
     /////////***// nj.images.save(localimg2, $original);
@@ -163,17 +287,17 @@ function loadImage( imageData ) {
 
 
   // create an offscreen canvas
-var canvas=document.createElement("canvas");
-
-var ctx=canvas.getContext("2d");
-
-// size the canvas to your desired image
-canvas.width=imgShape[1];
-canvas.height=imgShape[0];
-
-// get the imageData and pixel array from the canvas
-var canvasData=ctx.getImageData(0,0,canvas.width,canvas.height);
-var data=canvasData.data;
+// var canvas=document.createElement("canvas");
+//
+// var ctx=canvas.getContext("2d");
+//
+// // size the canvas to your desired image
+// canvas.width=imgShape[1];
+// canvas.height=imgShape[0];
+//
+// // get the imageData and pixel array from the canvas
+// var canvasData=ctx.getImageData(0,0,canvas.width,canvas.height);
+// var data=canvasData.data;
 
 
 // for(var j = 0; j < localimg2.length; j+=1){
@@ -187,28 +311,28 @@ var data=canvasData.data;
 //       data[j*4 + 3]=255; // make this pixel opaque
 // }
 // manipulate some pixel elements
-acount = 0;
-for(var i=0;i<data.length;i+=4){
-    // var px = localimg2[i];
-    // console.log(px.length)
-    data[i]= imageDataIntArray[i-acount];
-    data[i+1] = imageDataIntArray[i+1-acount];
-    data[i+2] = imageDataIntArray[i+2-acount];
-    data[i+3]=255; // make this pixel opaque
-    acount+=1;
-}
-
-// put the modified pixels back on the canvas
-ctx.putImageData(canvasData,0,0);
-// ctx.putImageData(localimg,0,0);
-
-// create a new img object
-var image=new Image();
-
-// set the img.src to the canvas data url
-image.src=canvas.toDataURL();
+// acount = 0;
+// for(var i=0;i<data.length;i+=4){
+//     // var px = localimg2[i];
+//     // console.log(px.length)
+//     data[i]= imageDataIntArray[i-acount];
+//     data[i+1] = imageDataIntArray[i+1-acount];
+//     data[i+2] = imageDataIntArray[i+2-acount];
+//     data[i+3]=255; // make this pixel opaque
+//     acount+=1;
+// }
+//
+// // put the modified pixels back on the canvas
+// ctx.putImageData(canvasData,0,0);
+// // ctx.putImageData(localimg,0,0);
+//
+// // create a new img object
+// var image=new Image();
+//
+// // set the img.src to the canvas data url
+// image.src=canvas.toDataURL();
 
 
 // append the new img object to the page
-document.body.appendChild(image);
-}
+// document.body.appendChild(image);
+// }

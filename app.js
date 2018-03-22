@@ -8,12 +8,32 @@ var stylus = require('stylus');
 var console = require('console');
 var nj = require('numjs');
 var fs = require('fs');
+var cache = require('memory-cache');
+var bodyParser = require("body-parser");
 // var canvas = require('canvas');
+
+//////////////////////////////////////////////////////
+
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7853-HDR.jpg');
+// var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
+
+
+  var img = nj.images.read(imagesrc);
+  var ogimageshape = img.shape;
+  console.log(img);
+  console.log(img.shape);
+
+  cache.put('imagendarray', img);
+  console.log("it's in cache");
+
+  console.log('cachesize: ' + cache.size());
+//////////////////////////////////////////////////////
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var imageshow = require('./routes/imageshow');
 var imagestream = require('./routes/giveimagestream');
+var giveimagefile = require('./routes/giveimagefile');
 
 
 var app = express();
@@ -35,6 +55,23 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/imageshow', imageshow);
 app.use('/img1', imagestream);
+app.use('/img2', giveimagefile);
+
+/** bodyParser.urlencoded(options)
+ * Parses the text as URL encoded data (which is how browsers tend to send form data from regular forms set to POST)
+ * and exposes the resulting object (containing the keys and values) on req.body
+ */
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
+
+
+app.get('/img/resized.png', function(req, res) {
+
+  res.sendFile(path.join(__dirname,'img.png'))
+});
 
 
 
