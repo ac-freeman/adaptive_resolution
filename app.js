@@ -14,7 +14,7 @@ var bodyParser = require("body-parser");
 
 //////////////////////////////////////////////////////
 
-var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7853-HDR.jpg');
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
 

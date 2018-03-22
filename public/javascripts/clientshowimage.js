@@ -24,7 +24,7 @@ window.addEventListener("load",drawpage,false) :
 window.attachEvent && window.attachEvent("onload",drawpage);
 
 function drawpage(){
-  console.log("loaded");
+  console.log("Window loaded");
 
 var cavas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -52,7 +52,7 @@ canvas.height = portHeight;
 ctx.beginPath();
 ctx.lineWidth="6";
 ctx.strokeStyle="red";
-ctx.rect(0,0,portWidth,portHeight); 
+ctx.rect(0,0,portWidth,portHeight);
 ctx.stroke();
 
 var data = {};
@@ -76,6 +76,7 @@ xhr.onload = function(e) {
     // img.width = ;
     // img.height = portHeight;
     img.src = window.URL.createObjectURL(blob);
+    console.log("Image loaded");
     // var img = container.getElementsByTagName('mainimg')[0];
     // img.onload = function(e) {
       // window.URL.revokeObjectURL(img.src); // Clean up after yourself.
