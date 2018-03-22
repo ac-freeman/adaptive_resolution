@@ -9,3 +9,10 @@ block scripts
   script(type='text/javascript').
     var imgShape = !{JSON.stringify(imgShape)};
   script(src='/javascripts/clientshowimage.js')
+
+
+
+block content
+  div.container#contain
+    canvas#canvas(width='320', height='480', z-index='1')
+    img.image#mainimage(src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="" height="" )

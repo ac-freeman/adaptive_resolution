@@ -32,7 +32,6 @@ var wShorter;
   }
 
 
-  // var file = __dirname + '/upload-folder/dramaticpenguin.MOV';
 console.log('cachesize: ' + cache.size());
   img = cache.get('imagendarray');
   console.log("Got from cache");

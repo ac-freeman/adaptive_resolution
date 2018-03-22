@@ -5,3 +5,13 @@ body {
 a {
   color: #00b7ff;
 }
+#canvas {
+  position: absolute;
+  z-index: 1;
+}
+#mainimage {
+  position: fixed;
+  left: 45%;
+  transform: translate(-50%);
+  z-index: 5;
+}
