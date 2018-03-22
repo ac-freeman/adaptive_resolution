@@ -12,8 +12,9 @@ var cache = require('memory-cache');
 var bodyParser = require("body-parser");
 // var canvas = require('canvas');
 
-//////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////
+//    Read images and add to cache when project starts    //
+////////////////////////////////////////////////////////////
 var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
