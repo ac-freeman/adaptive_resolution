@@ -2,10 +2,10 @@ window.addEventListener ?
 window.addEventListener("load",drawpage,false) :
 window.attachEvent && window.attachEvent("onload",drawpage);
 
-function drawpage(){
+function drawpage(coords){
   console.log("Window loaded");
 
-var cavas = document.getElementById('canvas');
+var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 // canvas.style.width='100%';
 // canvas.style.height='100%';
@@ -56,6 +56,8 @@ xhr.onload = function(e) {
     // img.height = portHeight;
     img.src = window.URL.createObjectURL(blob);
     console.log("Image loaded");
+
+
     // var img = container.getElementsByTagName('mainimg')[0];
     // img.onload = function(e) {
       // window.URL.revokeObjectURL(img.src); // Clean up after yourself.
@@ -66,6 +68,98 @@ xhr.onload = function(e) {
   }
 };
 
-xhr.send(JSON.stringify(data));
+if (Object.keys(coords).length > 2) {
+  coords.wWidth = portWidth;
+  coords.wHeight = portHeight;
+  console.log(JSON.stringify(coords));
+  console.log("requesting with coords");
+  xhr.send(JSON.stringify(coords));
+} else {
+
+  console.log("requesting without coords");
+  xhr.send(JSON.stringify(data));
+}
+initDraw(document.getElementById('canvas2'), portWidth, portHeight);
 
 };
+
+
+
+
+
+//from http://jsfiddle.net/d9BPz/546/
+function initDraw(canvas, portWidth, portHeight) {
+  console.log(portWidth + ',' + portHeight);
+
+  canvas.width = portWidth;
+  canvas.height = portHeight;
+
+    function setMousePosition(e) {
+        var ev = e || window.event; //Moz || IE
+        if (ev.pageX) { //Moz
+            mouse.x = ev.pageX + window.pageXOffset;
+            mouse.y = ev.pageY + window.pageYOffset;
+        } else if (ev.clientX) { //IE
+            mouse.x = ev.clientX + document.body.scrollLeft;
+            mouse.y = ev.clientY + document.body.scrollTop;
+        }
+    };
+
+    var mouse = {
+        x: 0,
+        y: 0,
+        startX: 0,
+        startY: 0
+    };
+    var element = null;
+
+    canvas.onmousemove = function (e) {
+        setMousePosition(e);
+        if (element !== null) {
+            element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+            element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+            element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+            element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+        }
+    }
+
+    canvas.onclick = function (e) {
+        if (element !== null) {
+
+            element = null;
+            // canvas = document.getElementById('canvas2');
+
+
+            // var context = this.canvas.getContext('2d');
+            // context.clearRect(0, 0, canvas.width, canvas.height);
+
+            canvas.style.cursor = "default";
+            console.log("finished.");
+            console.log("x="+mouse.startX+", y="+mouse.startY);
+            console.log("x="+mouse.x+", y="+mouse.y);
+            var img = document.getElementById('mainimage');
+            var imgWidth = img.clientWidth;
+            var imgHeight = img.clientHeight;
+            var coords = {};
+            coords.x = (mouse.startX < mouse.x) ? mouse.startX : mouse.x;
+            coords.y = (mouse.startY < mouse.y) ? mouse.startY : mouse.y;
+            coords.boxWidth = Math.abs(mouse.x - mouse.startX);
+            coords.boxHeight = Math.abs(mouse.y - mouse.startY);
+            coords.imgWidth = imgWidth;
+            coords.imgHeight = imgHeight;
+            drawpage(coords);
+
+        } else {
+            console.log("begun.");
+            console.log("x="+mouse.x+", y="+mouse.y);
+            mouse.startX = mouse.x;
+            mouse.startY = mouse.y;
+            element = document.createElement('div');
+            element.className = 'rectangle'
+            element.style.left = mouse.x + 'px';
+            element.style.top = mouse.y + 'px';
+            canvas.appendChild(element)
+            canvas.style.cursor = "crosshair";
+        }
+    }
+}

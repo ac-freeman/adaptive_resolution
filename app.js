@@ -10,12 +10,13 @@ var nj = require('numjs');
 var fs = require('fs');
 var cache = require('memory-cache');
 var bodyParser = require("body-parser");
+// var sharp = require('sharp');
 // var canvas = require('canvas');
 
 ////////////////////////////////////////////////////////////
 //    Read images and add to cache when project starts    //
 ////////////////////////////////////////////////////////////
-var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7853-HDR.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
 
