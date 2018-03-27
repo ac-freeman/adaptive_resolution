@@ -8,10 +8,16 @@ a {
 }
 #canvas {
   position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 5;
 }
 #mainimage {
   position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
 }
 #canvas2 {
@@ -28,4 +34,25 @@ a {
   position: fixed;
   top: 95%;
   z-index: 11;
+}
+#resetZoomButton {
+  position: fixed;
+  left: 50%;
+  bottom: 0%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+}
+h3 {
+  display: inline-block;
+}
+button {
+  float: right;
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: #fff;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
 }

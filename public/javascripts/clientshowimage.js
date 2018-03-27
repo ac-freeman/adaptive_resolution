@@ -1,6 +1,7 @@
 window.addEventListener ?
 window.addEventListener("load",drawpage,false) :
 window.attachEvent && window.attachEvent("onload",drawpage);
+var OGIMAGEURL;
 
 function drawpage(coords){
   console.log("Window loaded");
@@ -55,7 +56,19 @@ xhr.onload = function(e) {
     // document.getElementById('mainimage').src = window.URL.createObjectURL(blob);
     // img.width = ;
     // img.height = portHeight;
-    img.src = window.URL.createObjectURL(blob);
+
+    if (typeof OGIMAGEURL === 'undefined') {
+      OGIMAGEURL = window.URL.createObjectURL(blob);
+      img.src = OGIMAGEURL;
+    } else {
+      img.src = window.URL.createObjectURL(blob);
+    }
+
+
+    document.getElementById("resetZoomButton").addEventListener("click", function(){
+      img.src = OGIMAGEURL;
+    });
+
     console.log("Image loaded");
 
 
@@ -152,12 +165,15 @@ function initDraw(canvas, portWidth, portHeight) {
             var imgWidth = img.clientWidth;
             var imgHeight = img.clientHeight;
             var hToWRatio = canvas.height/canvas.width;
+            var xBuffer = parseInt((0.05 * $(window).width()) + (canvas.width-imgWidth)/2);
+            var yBuffer = parseInt((0.05 * $(window).height()) + (canvas.height-imgHeight)/2);
             var coords = {};
             coords.x = (mouse.startX < mouse.x) ? mouse.startX : mouse.x;
+            coords.x -= xBuffer;
             coords.boxWidth = Math.abs(mouse.x - mouse.startX);
             coords.boxHeight = Math.abs(parseInt(hToWRatio * coords.boxWidth));
             coords.y = (mouse.startY < mouse.y) ? mouse.startY : mouse.startY - coords.boxHeight;
-
+            coords.y -= yBuffer;
 
             coords.imgWidth = imgWidth;
             coords.imgHeight = imgHeight;
