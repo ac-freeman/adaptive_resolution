@@ -1,5 +1,6 @@
 body {
   padding: 0px;
+  margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 a {
@@ -7,16 +8,10 @@ a {
 }
 #canvas {
   position: fixed;
-  left: 46%;
-  top: 46%;
-  transform: translate(-50%, -50%);
   z-index: 5;
 }
 #mainimage {
   position: fixed;
-  left: 46%;
-  top: 46%;
-  transform: translate(-50%, -50%);
   z-index: 1;
 }
 #canvas2 {
@@ -24,9 +19,13 @@ a {
   width: 2000px;
   height: 2000px;
   z-index: 10;
-  border: 5px solid transparent;
 }
 .rectangle {
   border: 2px solid #f00;
   position: fixed;
+}
+#coordinatesText {
+  position: fixed;
+  top: 95%;
+  z-index: 11;
 }

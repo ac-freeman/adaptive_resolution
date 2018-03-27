@@ -69,10 +69,12 @@ router.post('/', function(req, res) {
     var wWidth = req.body.wWidth;
     var wHeight = req.body.wHeight;
 
-    var xBuffer = (wWidth - imgWidth) / 2;
+    // var xBuffer = (wWidth - imgWidth) / 2;
+    var xBuffer = 0;
     boxX = boxX - xBuffer;
     console.log('boxX = ' + boxX);
-    var yBuffer = (wHeight - imgHeight) / 2;
+    // var yBuffer = (wHeight - imgHeight) / 2;
+    var yBuffer = 0;
     boxY = boxY - yBuffer;
     console.log('boxY = ' + boxY);
 
