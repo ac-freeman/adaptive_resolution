@@ -4,17 +4,40 @@ window.attachEvent && window.attachEvent("onload",getImageShape);
 var OGIMAGEURL;
 var fullImageWidth;
 var fullImageHeight;
-var oldSliceX1 = 0;
-var oldSliceX2 = 0;
-var oldSliceY1 = 0;
-var oldSliceY2 = 0;
-var oldWZoomScale = 0;
-var oldHZoomScale = 0;
+
+var imageSpecs = {sliceX1: 0, sliceX2:0, sliceY1:0,sliceY2:0,wZoomScale:0,hZoomScale:0};
+
+
 var portWidth = parseInt(0.9 * $(window).width());
 var portHeight = parseInt(0.9 * $(window).height());
+var imageStack = [];
+var imageSpecsStack = [];
+imageSpecsStack.push(imageSpecs);
+var img;
 
 function getImageShape() {
   console.log("Window loaded");
+
+  img = document.getElementById('mainimage');
+
+
+  document.getElementById("resetZoomButton").addEventListener("click", function(){
+    img.src = OGIMAGEURL;
+    imageStack = [];
+    imageSpecsStack = [];
+    imageSpecsStack.push(imageSpecs);
+  });
+
+
+  document.getElementById("undoLastZoomButton").addEventListener("click", function(){
+    console.log("UNDOING LAST ZOOM");
+    var imgBlob = imageStack.pop();
+    if (typeof imgBlob !== 'undefined') {
+        img.src = imgBlob;
+    }
+    imageSpecsStack.pop();
+
+  });
 
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
@@ -85,7 +108,7 @@ xhr.onload = function(e) {
     var blob = this.response;
 
     // var img = document.createElement('img');
-    var img = document.getElementById('mainimage');
+
     // document.getElementById('mainimage').src = window.URL.createObjectURL(blob);
     // img.width = ;
     // img.height = portHeight;
@@ -93,20 +116,11 @@ xhr.onload = function(e) {
     if (typeof OGIMAGEURL === 'undefined') {
       OGIMAGEURL = window.URL.createObjectURL(blob);
       img.src = OGIMAGEURL;
+      // console.log("stack 0 = " + imageStack.pop());
     } else {
+      imageStack.push(img.src);
       img.src = window.URL.createObjectURL(blob);
     }
-
-
-    document.getElementById("resetZoomButton").addEventListener("click", function(){
-      img.src = OGIMAGEURL;
-      oldSliceX1 = 0;
-      oldSliceX2 = 0;
-      oldSliceY1 = 0;
-      oldSliceY2 = 0;
-      oldWZoomScale = 0;
-      oldHZoomScale = 0;
-    });
 
     console.log("Image loaded");
 
@@ -189,7 +203,7 @@ function initDraw(canvas, portWidth, portHeight) {
     canvas.onclick = function (e) {
         if (element !== null) {
 
-
+            var oldImageSpecs = imageSpecsStack.pop();
             // canvas = document.getElementById('canvas2');
 
 
@@ -217,37 +231,37 @@ function initDraw(canvas, portWidth, portHeight) {
             coords.imgWidth = imgWidth;
             coords.imgHeight = imgHeight;
 
-            if (oldWZoomScale == 0 && oldHZoomScale == 0) {
+            if (oldImageSpecs.wZoomScale == 0 && oldImageSpecs.hZoomScale == 0) {
               coords.wZoomScale = fullImageWidth / imgWidth;  //every x pixel in canvas = this many pixels in orginal image
               coords.hZoomScale = fullImageHeight / imgHeight;
           } else {
-            coords.wZoomScale = oldWZoomScale;
-            coords.hZoomScale = oldHZoomScale;
+            coords.wZoomScale = oldImageSpecs.wZoomScale;
+            coords.hZoomScale = oldImageSpecs.hZoomScale;
           }
 
-            if (oldSliceX2 == 0) {
+            if (oldImageSpecs.sliceX2 == 0) {
               var sliceX2 = fullImageWidth - ((coords.boxWidth + coords.x) * coords.wZoomScale);
           } else {
-            var sliceX2 = ((portWidth - (coords.boxWidth + coords.x)) * coords.wZoomScale) + oldSliceX2;
+            var sliceX2 = ((portWidth - (coords.boxWidth + coords.x)) * coords.wZoomScale) + oldImageSpecs.sliceX2;
           }
-          if (oldSliceY2 == 0) {
+          if (oldImageSpecs.sliceY2 == 0) {
             var sliceY2 = fullImageHeight - ((coords.boxHeight + coords.y) * coords.hZoomScale);
           } else {
-            var sliceY2 = ((portHeight - (coords.boxHeight + coords.y)) * coords.hZoomScale) + oldSliceY2;
+            var sliceY2 = ((portHeight - (coords.boxHeight + coords.y)) * coords.hZoomScale) + oldImageSpecs.sliceY2;
           }
             coords.sliceX2 = sliceX2;
 
             coords.sliceY2 = sliceY2;
 
-            if (oldSliceX1 == 0) {
+            if (oldImageSpecs.sliceX1 == 0) {
                 var sliceX1 = (coords.x * coords.wZoomScale);
             } else {
-              var sliceX1 = oldSliceX1 + (coords.x * coords.wZoomScale);
+              var sliceX1 = oldImageSpecs.sliceX1 + (coords.x * coords.wZoomScale);
             }
-            if (oldSliceY1 == 0) {
+            if (oldImageSpecs.sliceY1 == 0) {
                 var sliceY1 = (coords.y * coords.hZoomScale);
             } else {
-              var sliceY1 = oldSliceY1 + (coords.y * coords.hZoomScale);
+              var sliceY1 = oldImageSpecs.sliceY1 + (coords.y * coords.hZoomScale);
             }
 
 
@@ -255,16 +269,20 @@ function initDraw(canvas, portWidth, portHeight) {
             coords.sliceX1 = sliceX1;
             coords.sliceY1 = sliceY1;
 
-            oldSliceX1 = sliceX1;
-            oldSliceX2 = sliceX2;
-            oldSliceY1 = sliceY1;
-            oldSliceY2 = sliceY2;
-            oldHZoomScale = ((fullImageHeight - sliceY1 - sliceY2) / portHeight);
+            // oldSliceX1 = sliceX1;
+            // oldSliceX2 = sliceX2;
+            // oldSliceY1 = sliceY1;
+            // oldSliceY2 = sliceY2;
+            hZoomScale = ((fullImageHeight - sliceY1 - sliceY2) / portHeight);
             console.log("fullImageHeight = " + fullImageHeight + ",    sliceY1 = " + sliceY1 + ",    sliceY2 = " + sliceY2 + ",    imgHeight = " + imgHeight + ",    portHeight = " + portHeight);
-            console.log("new oldHZoomScale = " + oldHZoomScale);
-            oldWZoomScale = ((fullImageWidth - sliceX1 - sliceX2) / portWidth);
+            console.log("new oldHZoomScale = " + hZoomScale);
+            wZoomScale = ((fullImageWidth - sliceX1 - sliceX2) / portWidth);
             console.log("fullImageWidth = " + fullImageWidth + ",    sliceX1 = " + sliceX1 + ",    sliceX2 = " + sliceX2 + ",    imgWidth = " + imgWidth + ",    portWidth = " + portWidth);
-            console.log("new oldWZoomScale = " + oldWZoomScale);
+            console.log("new oldWZoomScale = " + wZoomScale);
+
+            imageSpecsStack.push(oldImageSpecs);
+            var newImageSpecs = {sliceX1: sliceX1, sliceX2:sliceX2, sliceY1:sliceY1,sliceY2:sliceY2,wZoomScale:wZoomScale,hZoomScale:hZoomScale};
+            imageSpecsStack.push(newImageSpecs);
             drawpage(coords);
             element.style.display = 'none';
             element = null;
