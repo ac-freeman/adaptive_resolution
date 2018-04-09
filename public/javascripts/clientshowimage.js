@@ -30,12 +30,14 @@ function getImageShape() {
 
 
   document.getElementById("undoLastZoomButton").addEventListener("click", function(){
+    if (img.src != OGIMAGEURL){
     console.log("UNDOING LAST ZOOM");
     var imgBlob = imageStack.pop();
     if (typeof imgBlob !== 'undefined') {
         img.src = imgBlob;
     }
     imageSpecsStack.pop();
+  }
 
   });
 
