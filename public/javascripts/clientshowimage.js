@@ -19,11 +19,13 @@ var img;
 function getImageShape() {
   console.log("Window loaded");
 
-  img = document.getElementById('mainimage');
+  img = document.getElementById('currentImage');
+  fullImg = document.getElementById('fullImage');
 
 
   document.getElementById("resetZoomButton").addEventListener("click", function(){
-    img.src = OGIMAGEURL;
+    fullImg.src = OGIMAGEURL;
+    img.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
     imageStack = [];
     imageSpecsStack = [];
     imageSpecsStack.push(imageSpecs);
@@ -63,24 +65,24 @@ function getImageShape() {
         if (!alreadyLast) {
 
 
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        alert("Cannot move any more");
-      }
+          var coords2 = {};
+          coords2.boxWidth = portWidth;
+          coords2.boxHeight = portHeight;
+          coords2.wWidth = portWidth;
+          coords2.wHeight = portHeight
+          coords2.wZoomScale = newSpec.wZoomScale
+          coords2.hZoomScale = newSpec.hZoomScale;
+          coords2.sliceX1 = newSpec.sliceX1;
+          coords2.sliceX2 = newSpec.sliceX2
+          coords2.sliceY1 = newSpec.sliceY1;
+          coords2.sliceY2 = newSpec.sliceY2
+          imageSpecsStack.push(currentSpec);
+          imageSpecsStack.push(newSpec);
+          imageStack.push(imgBlob);
+          drawpage(coords2);
+        } else {
+          alert("Cannot move any more");
+        }
       } else {
         imageSpecsStack.push(currentSpec);
       }
@@ -110,24 +112,24 @@ function getImageShape() {
         if (!alreadyLast) {
 
 
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        alert("Cannot move any more");
-      }
+          var coords2 = {};
+          coords2.boxWidth = portWidth;
+          coords2.boxHeight = portHeight;
+          coords2.wWidth = portWidth;
+          coords2.wHeight = portHeight
+          coords2.wZoomScale = newSpec.wZoomScale
+          coords2.hZoomScale = newSpec.hZoomScale;
+          coords2.sliceX1 = newSpec.sliceX1;
+          coords2.sliceX2 = newSpec.sliceX2
+          coords2.sliceY1 = newSpec.sliceY1;
+          coords2.sliceY2 = newSpec.sliceY2
+          imageSpecsStack.push(currentSpec);
+          imageSpecsStack.push(newSpec);
+          imageStack.push(imgBlob);
+          drawpage(coords2);
+        } else {
+          alert("Cannot move any more");
+        }
       } else {
         imageSpecsStack.push(currentSpec);
       }
@@ -157,24 +159,24 @@ function getImageShape() {
         if (!alreadyLast) {
 
 
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        alert("Cannot move any more");
-      }
+          var coords2 = {};
+          coords2.boxWidth = portWidth;
+          coords2.boxHeight = portHeight;
+          coords2.wWidth = portWidth;
+          coords2.wHeight = portHeight
+          coords2.wZoomScale = newSpec.wZoomScale
+          coords2.hZoomScale = newSpec.hZoomScale;
+          coords2.sliceX1 = newSpec.sliceX1;
+          coords2.sliceX2 = newSpec.sliceX2
+          coords2.sliceY1 = newSpec.sliceY1;
+          coords2.sliceY2 = newSpec.sliceY2
+          imageSpecsStack.push(currentSpec);
+          imageSpecsStack.push(newSpec);
+          imageStack.push(imgBlob);
+          drawpage(coords2);
+        } else {
+          alert("Cannot move any more");
+        }
       } else {
         imageSpecsStack.push(currentSpec);
       }
@@ -204,24 +206,24 @@ function getImageShape() {
         if (!alreadyLast) {
 
 
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        alert("Cannot move any more");
-      }
+          var coords2 = {};
+          coords2.boxWidth = portWidth;
+          coords2.boxHeight = portHeight;
+          coords2.wWidth = portWidth;
+          coords2.wHeight = portHeight
+          coords2.wZoomScale = newSpec.wZoomScale
+          coords2.hZoomScale = newSpec.hZoomScale;
+          coords2.sliceX1 = newSpec.sliceX1;
+          coords2.sliceX2 = newSpec.sliceX2
+          coords2.sliceY1 = newSpec.sliceY1;
+          coords2.sliceY2 = newSpec.sliceY2
+          imageSpecsStack.push(currentSpec);
+          imageSpecsStack.push(newSpec);
+          imageStack.push(imgBlob);
+          drawpage(coords2);
+        } else {
+          alert("Cannot move any more");
+        }
       } else {
         imageSpecsStack.push(currentSpec);
       }
@@ -305,11 +307,13 @@ function drawpage(coords){
 
       if (typeof OGIMAGEURL === 'undefined') {
         OGIMAGEURL = window.URL.createObjectURL(blob);
-        img.src = OGIMAGEURL;
+        fullImg.src = OGIMAGEURL;
         // console.log("stack 0 = " + imageStack.pop());
       } else {
         imageStack.push(img.src);
+        fullImg.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         img.src = window.URL.createObjectURL(blob);
+
       }
 
       console.log("Image loaded");
@@ -404,7 +408,10 @@ function initDraw(canvas, portWidth, portHeight) {
       console.log("finished.");
       console.log("x="+mouse.startX+", y="+mouse.startY);
       console.log("x="+mouse.x+", y="+mouse.y);
-      var img = document.getElementById('mainimage');
+      var img = document.getElementById('currentImage');
+      if (img.src === "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+        var img = document.getElementById('fullImage');
+      }
       var imgWidth = img.clientWidth;
       var imgHeight = img.clientHeight;
       var hToWRatio = canvas.height/canvas.width;

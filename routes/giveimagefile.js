@@ -104,7 +104,11 @@ router.post('/', function(req, res) {
       newHeight = wHeight;
       newWidth = parseInt((boxWidth/boxHeight)*newHeight);
     }
-    img = nj.images.resize(img, newHeight,newWidth);
+
+    if (newHeight < img.shape[0] && newWidth < img.shape[1]) {
+        img = nj.images.resize(img, newHeight,newWidth);
+    }
+
 
     nj.images.save(img, 'resized.png');
     console.log("Saved as png");
