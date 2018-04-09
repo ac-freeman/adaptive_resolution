@@ -50,12 +50,37 @@ a {
   transform: translate(-50%, -50%);
   z-index: 11;
 }
-#rightButton {
+#leftButton {
   position: fixed;
   left: 68%;
   bottom: 0%;
   transform: translate(-50%, -50%);
   z-index: 11;
+  padding: 3px 3px;
+}
+#upButton {
+  position: fixed;
+  left: 70%;
+  bottom: 1.4%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  padding: 3px 3px;
+}
+#downButton {
+  position: fixed;
+  left: 70%;
+  bottom: -1.4%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  padding: 3px 3px;
+}
+#rightButton {
+  position: fixed;
+  left: 72%;
+  bottom: 0%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  padding: 3px 3px;
 }
 h3 {
   display: inline-block;
@@ -65,7 +90,7 @@ button {
   background-color: #4caf50; /* Green */
   border: none;
   color: #fff;
-  padding: 7px 16px;
+  padding: 5px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
