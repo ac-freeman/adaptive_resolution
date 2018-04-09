@@ -50,6 +50,13 @@ a {
   transform: translate(-50%, -50%);
   z-index: 11;
 }
+#rightButton {
+  position: fixed;
+  left: 68%;
+  bottom: 0%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+}
 h3 {
   display: inline-block;
 }

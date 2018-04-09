@@ -58,10 +58,10 @@ router.post('/', function(req, res) {
   } else {
 
     console.log("second load");
-    var imgWidth = req.body.imgWidth;
-    var imgHeight = req.body.imgHeight;
-    var boxX = req.body.x;
-    var boxY = req.body.y;
+    // var imgWidth = req.body.imgWidth;
+    // var imgHeight = req.body.imgHeight;
+    // var boxX = req.body.x;
+    // var boxY = req.body.y;
     var boxWidth = req.body.boxWidth;
     var boxHeight = req.body.boxHeight;
     var wWidth = req.body.wWidth;
@@ -70,11 +70,11 @@ router.post('/', function(req, res) {
     // var xBuffer = (wWidth - imgWidth) / 2;
     // var xBuffer = 0;
     // boxX = boxX - xBuffer;
-    console.log('boxX = ' + boxX);
+    // console.log('boxX = ' + boxX);
     // var yBuffer = (wHeight - imgHeight) / 2;
     // var yBuffer = 0;
     // boxY = boxY - yBuffer;
-    console.log('boxY = ' + boxY);
+    // console.log('boxY = ' + boxY);
 
     // var wZoomScale = iWidth / imgWidth;
     var wZoomScale = req.body.wZoomScale;
@@ -89,7 +89,7 @@ router.post('/', function(req, res) {
     var sliceY1 = req.body.sliceY1;
     var sliceY2 = req.body.sliceY2;
 
-img = cache.get('imagendarray');
+    img = cache.get('imagendarray');
     console.log(img.shape);
 
       //the negative means you skip the last N rows/columns
