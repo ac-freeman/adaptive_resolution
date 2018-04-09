@@ -1,20 +1,52 @@
 window.addEventListener ?
-window.addEventListener("load",drawpage,false) :
-window.attachEvent && window.attachEvent("onload",drawpage);
+window.addEventListener("load",getImageShape,false) :
+window.attachEvent && window.attachEvent("onload",getImageShape);
 var OGIMAGEURL;
+var fullImageWidth;
+var fullImageHeight;
+var oldSliceX1 = 0;
+var oldSliceX2 = 0;
+var oldSliceY1 = 0;
+var oldSliceY2 = 0;
+var oldWZoomScale = 0;
+var oldHZoomScale = 0;
+var portWidth = parseInt(0.9 * $(window).width());
+var portHeight = parseInt(0.9 * $(window).height());
+
+function getImageShape() {
+  console.log("Window loaded");
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(xhttp.responseText);
+      var jsonresponse = JSON.parse(xhttp.responseText);
+      fullImageWidth = jsonresponse.width;
+      fullImageHeight = jsonresponse.height;
+      console.log("WIDTH = " + fullImageWidth + "HEIGHT = " + fullImageHeight);
+
+      drawpage({});
+    }
+  };
+  xhttp.open("GET", "getimageshape", true);
+
+xhttp.send();
+}
 
 function drawpage(coords){
-  console.log("Window loaded");
+
+
+
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+
 // canvas.style.width='100%';
 // canvas.style.height='100%';
 
 // var padding = parseInt(0.1 * $(window).width());
 
-var portWidth = parseInt(0.9 * $(window).width());
-var portHeight = parseInt(0.9 * $(window).height());
+
 
 //Set canvas drawing area width/height
 // canvas.width = window.innerWidth;
@@ -35,6 +67,7 @@ ctx.lineWidth="6";
 ctx.strokeStyle="red";
 ctx.rect(0,0,portWidth,portHeight);
 ctx.stroke();
+ctx.imageSmoothingEnabled = false;
 
 var data = {};
 					data.width =    portWidth;// returns height of browser viewport
@@ -67,6 +100,12 @@ xhr.onload = function(e) {
 
     document.getElementById("resetZoomButton").addEventListener("click", function(){
       img.src = OGIMAGEURL;
+      oldSliceX1 = 0;
+      oldSliceX2 = 0;
+      oldSliceY1 = 0;
+      oldSliceY2 = 0;
+      oldWZoomScale = 0;
+      oldHZoomScale = 0;
     });
 
     console.log("Image loaded");
@@ -177,6 +216,55 @@ function initDraw(canvas, portWidth, portHeight) {
 
             coords.imgWidth = imgWidth;
             coords.imgHeight = imgHeight;
+
+            if (oldWZoomScale == 0 && oldHZoomScale == 0) {
+              coords.wZoomScale = fullImageWidth / imgWidth;  //every x pixel in canvas = this many pixels in orginal image
+              coords.hZoomScale = fullImageHeight / imgHeight;
+          } else {
+            coords.wZoomScale = oldWZoomScale;
+            coords.hZoomScale = oldHZoomScale;
+          }
+
+            if (oldSliceX2 == 0) {
+              var sliceX2 = fullImageWidth - ((coords.boxWidth + coords.x) * coords.wZoomScale);
+          } else {
+            var sliceX2 = ((portWidth - (coords.boxWidth + coords.x)) * coords.wZoomScale) + oldSliceX2;
+          }
+          if (oldSliceY2 == 0) {
+            var sliceY2 = fullImageHeight - ((coords.boxHeight + coords.y) * coords.hZoomScale);
+          } else {
+            var sliceY2 = ((portHeight - (coords.boxHeight + coords.y)) * coords.hZoomScale) + oldSliceY2;
+          }
+            coords.sliceX2 = sliceX2;
+
+            coords.sliceY2 = sliceY2;
+
+            if (oldSliceX1 == 0) {
+                var sliceX1 = (coords.x * coords.wZoomScale);
+            } else {
+              var sliceX1 = oldSliceX1 + (coords.x * coords.wZoomScale);
+            }
+            if (oldSliceY1 == 0) {
+                var sliceY1 = (coords.y * coords.hZoomScale);
+            } else {
+              var sliceY1 = oldSliceY1 + (coords.y * coords.hZoomScale);
+            }
+
+
+
+            coords.sliceX1 = sliceX1;
+            coords.sliceY1 = sliceY1;
+
+            oldSliceX1 = sliceX1;
+            oldSliceX2 = sliceX2;
+            oldSliceY1 = sliceY1;
+            oldSliceY2 = sliceY2;
+            oldHZoomScale = ((fullImageHeight - sliceY1 - sliceY2) / portHeight);
+            console.log("fullImageHeight = " + fullImageHeight + ",    sliceY1 = " + sliceY1 + ",    sliceY2 = " + sliceY2 + ",    imgHeight = " + imgHeight + ",    portHeight = " + portHeight);
+            console.log("new oldHZoomScale = " + oldHZoomScale);
+            oldWZoomScale = ((fullImageWidth - sliceX1 - sliceX2) / portWidth);
+            console.log("fullImageWidth = " + fullImageWidth + ",    sliceX1 = " + sliceX1 + ",    sliceX2 = " + sliceX2 + ",    imgWidth = " + imgWidth + ",    portWidth = " + portWidth);
+            console.log("new oldWZoomScale = " + oldWZoomScale);
             drawpage(coords);
             element.style.display = 'none';
             element = null;

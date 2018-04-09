@@ -8,11 +8,7 @@ var cache = require('memory-cache');
 
 router.post('/', function(req, res) {
 
-  // console.log(req);
-  console.log('TEEEEEEST' + req.body);
-  console.log('TEEEEEEST' + req.body.testVar);
-
-  console.log('cachesize: ' + cache.size());
+    console.log('cachesize: ' + cache.size());
     img = cache.get('imagendarray');
     console.log("Got from cache");
     console.log(img.length);
@@ -23,6 +19,8 @@ router.post('/', function(req, res) {
 
   var obj = {};
 	console.log('body: ' + JSON.stringify(req.body));
+
+  //first load
   if (Object.keys(req.body).length < 3) {
     var wWidth = req.body.width;
     var wHeight = req.body.height;
@@ -78,17 +76,24 @@ router.post('/', function(req, res) {
     // boxY = boxY - yBuffer;
     console.log('boxY = ' + boxY);
 
-    var wZoomScale = iWidth / imgWidth;
-    var hZoomScale = iHeight / imgHeight;
+    // var wZoomScale = iWidth / imgWidth;
+    var wZoomScale = req.body.wZoomScale;
+    // var hZoomScale = iHeight / imgHeight;
+    var hZoomScale = req.body.hZoomScale;
 
-    sliceX2 = iWidth - ((boxWidth + boxX) * wZoomScale);
-    sliceY2 = iHeight - ((boxHeight + boxY) * hZoomScale);
+    // sliceX2 = iWidth - ((boxWidth + boxX) * wZoomScale);
+    var sliceX1 = req.body.sliceX1;
+    var sliceX2 = req.body.sliceX2;
 
+    // sliceY2 = iHeight - ((boxHeight + boxY) * hZoomScale);
+    var sliceY1 = req.body.sliceY1;
+    var sliceY2 = req.body.sliceY2;
 
 img = cache.get('imagendarray');
     console.log(img.shape);
 
-    img = img.slice([(boxY * hZoomScale),-sliceY2],[(boxX * wZoomScale),-sliceX2]);
+      //the negative means you skip the last N rows/columns
+    img = img.slice([sliceY1,-sliceY2],[sliceX1,-sliceX2]);
 
     var newWidth;
     var newHeight;

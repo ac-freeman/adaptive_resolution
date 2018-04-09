@@ -10,13 +10,14 @@ var nj = require('numjs');
 var fs = require('fs');
 var cache = require('memory-cache');
 var bodyParser = require("body-parser");
+var increaseMemoryLimit = require("increase-memory-limit");
 // var sharp = require('sharp');
 // var canvas = require('canvas');
 
 ////////////////////////////////////////////////////////////
 //    Read images and add to cache when project starts    //
 ////////////////////////////////////////////////////////////
-var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7853-HDR.jpg');
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5466.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
 
@@ -36,6 +37,7 @@ var users = require('./routes/users');
 var imageshow = require('./routes/imageshow');
 var imagestream = require('./routes/giveimagestream');
 var giveimagefile = require('./routes/giveimagefile');
+var getimageshape = require('./routes/getimageshape');
 
 
 var app = express();
@@ -58,6 +60,7 @@ app.use('/users', users);
 app.use('/imageshow', imageshow);
 app.use('/img1', imagestream);
 app.use('/img2', giveimagefile);
+app.use('/getimageshape', getimageshape);
 
 /** bodyParser.urlencoded(options)
  * Parses the text as URL encoded data (which is how browsers tend to send form data from regular forms set to POST)
