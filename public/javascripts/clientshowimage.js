@@ -37,7 +37,19 @@ function getImageShape() {
       console.log("UNDOING LAST ZOOM");
       var imgBlob = imageStack.pop();
       if (typeof imgBlob !== 'undefined') {
+
         img.src = imgBlob;
+        // img.onload = function(){
+          var resHeight = img.height;
+          var resWidth = img.width;
+          console.log("resHeight = " + resHeight + ",    resWidth = " +resWidth);
+          // if (resHeight > portHeight || resWidth > portWidth) {
+          //   document.getElementById('messageText').innerHTML = "Zoomed in too far";
+          // } else {
+            document.getElementById('messageText').innerHTML = "_";
+          // }
+
+        // }
       }
       imageSpecsStack.pop();
     }
@@ -308,10 +320,23 @@ function drawpage(coords){
       if (typeof OGIMAGEURL === 'undefined') {
         OGIMAGEURL = window.URL.createObjectURL(blob);
         fullImg.src = OGIMAGEURL;
+        document.getElementById('messageText').innerHTML = "";
         // console.log("stack 0 = " + imageStack.pop());
       } else {
         imageStack.push(img.src);
         fullImg.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        img.onload = function(){
+          console.log("IN ON LOAD FUNCTION");
+          var resHeight = img.height;
+          var resWidth = img.width;
+          if (resHeight > portHeight || resWidth > portWidth) {
+            document.getElementById('messageText').innerHTML = "Zoomed in too far";
+          } else {
+            document.getElementById('messageText').innerHTML = "";
+          }
+
+          // code here to use the dimensions
+        }
         img.src = window.URL.createObjectURL(blob);
 
       }

@@ -17,7 +17,7 @@ var increaseMemoryLimit = require("increase-memory-limit");
 ////////////////////////////////////////////////////////////
 //    Read images and add to cache when project starts    //
 ////////////////////////////////////////////////////////////
-var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7682.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
 
