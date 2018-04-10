@@ -67,10 +67,11 @@ function getImageShape() {
 
       var currentSpec = imageSpecsStack.pop();
       if (typeof currentSpec !== 'undefined') {
-        var newSpec = currentSpec;
+        let newSpec = Object.assign({}, currentSpec);
         if (newSpec.sliceX2 - MOVECONSTANT > 1) {
           newSpec.sliceX1 += MOVECONSTANT;
           newSpec.sliceX2 -= MOVECONSTANT;
+          console.log('currentSpec.sliceX1 = ' + currentSpec.sliceX1 + ',    newSpec.sliceX1 = ' + newSpec.sliceX1);
         } else if (newSpec.sliceX2 != 1){
           newSpec.sliceX1 += currentSpec.sliceX2;
           newSpec.sliceX2 = 1;
@@ -114,7 +115,7 @@ function getImageShape() {
 
       var currentSpec = imageSpecsStack.pop();
       if (typeof currentSpec !== 'undefined') {
-        var newSpec = currentSpec;
+        let newSpec = Object.assign({}, currentSpec);
         if (newSpec.sliceX1 - MOVECONSTANT > 1) {
           newSpec.sliceX1 -= MOVECONSTANT;
           newSpec.sliceX2 += MOVECONSTANT;
@@ -161,7 +162,7 @@ function getImageShape() {
 
       var currentSpec = imageSpecsStack.pop();
       if (typeof currentSpec !== 'undefined') {
-        var newSpec = currentSpec;
+        let newSpec = Object.assign({}, currentSpec);
         if (newSpec.sliceY1 - MOVECONSTANT > 1) {
           newSpec.sliceY1 -= MOVECONSTANT;
           newSpec.sliceY2 += MOVECONSTANT;
@@ -208,7 +209,7 @@ function getImageShape() {
 
       var currentSpec = imageSpecsStack.pop();
       if (typeof currentSpec !== 'undefined') {
-        var newSpec = currentSpec;
+        let newSpec = Object.assign({}, currentSpec);
         if (newSpec.sliceY2 - MOVECONSTANT > 1) {
           newSpec.sliceY1 += MOVECONSTANT;
           newSpec.sliceY2 -= MOVECONSTANT;
