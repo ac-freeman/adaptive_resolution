@@ -14,8 +14,8 @@ router.post('/', function(req, res) {
     console.log(img.length);
 
     var shape = img.shape;
-    var iWidth = shape[1];
-    var iHeight = shape[0];
+    var fullImageWidth = shape[1];
+    var fullImageHeight = shape[0];
 
   var obj = {};
 	console.log('body: ' + JSON.stringify(req.body));
@@ -37,13 +37,28 @@ router.post('/', function(req, res) {
 
     var isPortrait = true;
     var ratio;
-    if (iWidth > iHeight) {
+    if (fullImageWidth > fullImageHeight) {
       isPortrait = false;
-      ratio = iHeight / iWidth;
+      ratio = fullImageHeight / fullImageWidth;
+      console.log('first wHeight = ' + wHeight + ',    wWidth = ' + wWidth);
       wHeight = parseInt( wWidth * ratio);
+      if (wHeight > req.body.height) {
+        console.log('wHeight > bodyHeight');
+        var shrinkRatio = (req.body.height) / wHeight;
+        wHeight = req.body.height;
+        wWidth = parseInt(wWidth * shrinkRatio);
+        console.log('wHeight = ' + wHeight + ',    wWidth = ' + wWidth );
+      }
     } else {
-      ratio = iWidth / iHeight;
+      ratio = fullImageWidth / fullImageHeight;
       wWidth = parseInt(wHeight * ratio);
+      if (wWidth > req.body.width) {
+        console.log('wWidth > bodyWidth');
+        var shrinkRatio = (req.body.width) / wWidth;
+        wWidth = req.body.width;
+        wHeight = parseInt(wHeight * shrinkRatio);
+        console.log('wHeight = ' + wHeight + ',    wWidth = ' + wWidth );
+      }
     }
 
     console.log(shape);
@@ -76,16 +91,16 @@ router.post('/', function(req, res) {
     // boxY = boxY - yBuffer;
     // console.log('boxY = ' + boxY);
 
-    // var wZoomScale = iWidth / imgWidth;
+    // var wZoomScale = fullImageWidth / imgWidth;
     var wZoomScale = req.body.wZoomScale;
-    // var hZoomScale = iHeight / imgHeight;
+    // var hZoomScale = fullImageHeight / imgHeight;
     var hZoomScale = req.body.hZoomScale;
 
-    // sliceX2 = iWidth - ((boxWidth + boxX) * wZoomScale);
+    // sliceX2 = fullImageWidth - ((boxWidth + boxX) * wZoomScale);
     var sliceX1 = req.body.sliceX1;
     var sliceX2 = req.body.sliceX2;
 
-    // sliceY2 = iHeight - ((boxHeight + boxY) * hZoomScale);
+    // sliceY2 = fullImageHeight - ((boxHeight + boxY) * hZoomScale);
     var sliceY1 = req.body.sliceY1;
     var sliceY2 = req.body.sliceY2;
 

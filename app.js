@@ -17,7 +17,7 @@ var increaseMemoryLimit = require("increase-memory-limit");
 ////////////////////////////////////////////////////////////
 //    Read images and add to cache when project starts    //
 ////////////////////////////////////////////////////////////
-var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7682.jpg');
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7853-HDR.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
 
@@ -96,6 +96,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+  console.log(err);
 });
 
 module.exports = app;

@@ -22,7 +22,7 @@ function getImageShape() {
   img = document.getElementById('currentImage');
   img.onload = function(){
     console.log("IN ON LOAD FUNCTION");
-    if (img.naturalWidth*img.naturalHeight < portHeight*portWidth && img.src != "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+    if (img.naturalHeight < portHeight && img.naturalWidth < portWidth && img.src != "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
       document.getElementById('messageText').innerHTML = "Zoomed in too far";
     } else {
       document.getElementById('messageText').innerHTML = "";
@@ -53,7 +53,7 @@ function getImageShape() {
         } else {
           console.log("NOT undoing to original image");
           img.src = imgBlob;
-          }
+        }
       }
       imageSpecsStack.pop();
     }
