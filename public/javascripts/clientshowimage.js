@@ -20,6 +20,14 @@ function getImageShape() {
   console.log("Window loaded");
 
   img = document.getElementById('currentImage');
+  img.onload = function(){
+    console.log("IN ON LOAD FUNCTION");
+    if (img.naturalWidth*img.naturalHeight < portHeight*portWidth && img.src != "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+      document.getElementById('messageText').innerHTML = "Zoomed in too far";
+    } else {
+      document.getElementById('messageText').innerHTML = "";
+    }
+  }
   fullImg = document.getElementById('fullImage');
 
 
@@ -37,19 +45,15 @@ function getImageShape() {
       console.log("UNDOING LAST ZOOM");
       var imgBlob = imageStack.pop();
       if (typeof imgBlob !== 'undefined') {
-
-        img.src = imgBlob;
-        // img.onload = function(){
-          var resHeight = img.height;
-          var resWidth = img.width;
-          console.log("resHeight = " + resHeight + ",    resWidth = " +resWidth);
-          // if (resHeight > portHeight || resWidth > portWidth) {
-          //   document.getElementById('messageText').innerHTML = "Zoomed in too far";
-          // } else {
-            document.getElementById('messageText').innerHTML = "_";
-          // }
-
-        // }
+        console.log("imgBlob: " +imgBlob);
+        if (imgBlob == "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+          console.log("Undoing to original image");
+          fullImg.src = OGIMAGEURL;
+          img.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        } else {
+          console.log("NOT undoing to original image");
+          img.src = imgBlob;
+          }
       }
       imageSpecsStack.pop();
     }
@@ -262,31 +266,10 @@ function getImageShape() {
 
 function drawpage(coords){
 
-
-
-
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
-
-  // canvas.style.width='100%';
-  // canvas.style.height='100%';
-
-  // var padding = parseInt(0.1 * $(window).width());
-
-
-
-  //Set canvas drawing area width/height
-  // canvas.width = window.innerWidth;
-  // canvas.height = window.innerHeight;
   canvas.width = portWidth;
   canvas.height = portHeight;
-
-
-
-  //Draw rectangle
-  // context.rect(0, 0, portWidth, portHeight);
-  // context.fillStyle = 'yellow';
-  // context.fill();
 
   //Draw rectangle
   ctx.beginPath();
@@ -303,7 +286,6 @@ function drawpage(coords){
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/img2', true);
   //Send the proper header information along with the request
-  // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhr.responseType = 'blob';
 
@@ -311,46 +293,16 @@ function drawpage(coords){
     if (this.status == 200) {
       var blob = this.response;
 
-      // var img = document.createElement('img');
-
-      // document.getElementById('mainimage').src = window.URL.createObjectURL(blob);
-      // img.width = ;
-      // img.height = portHeight;
-
       if (typeof OGIMAGEURL === 'undefined') {
         OGIMAGEURL = window.URL.createObjectURL(blob);
         fullImg.src = OGIMAGEURL;
-        document.getElementById('messageText').innerHTML = "";
-        // console.log("stack 0 = " + imageStack.pop());
       } else {
         imageStack.push(img.src);
         fullImg.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-        img.onload = function(){
-          console.log("IN ON LOAD FUNCTION");
-          var resHeight = img.height;
-          var resWidth = img.width;
-          if (resHeight > portHeight || resWidth > portWidth) {
-            document.getElementById('messageText').innerHTML = "Zoomed in too far";
-          } else {
-            document.getElementById('messageText').innerHTML = "";
-          }
-
-          // code here to use the dimensions
-        }
         img.src = window.URL.createObjectURL(blob);
-
       }
 
       console.log("Image loaded");
-
-
-      // var img = container.getElementsByTagName('mainimg')[0];
-      // img.onload = function(e) {
-      // window.URL.revokeObjectURL(img.src); // Clean up after yourself.
-      // };
-      // img.src = window.URL.createObjectURL(blob);
-      // document.body.appendChild(img);
-
     }
   };
 
@@ -423,11 +375,6 @@ function initDraw(canvas, portWidth, portHeight) {
     if (element !== null) {
 
       var oldImageSpecs = imageSpecsStack.pop();
-      // canvas = document.getElementById('canvas2');
-
-
-      // var context = this.canvas.getContext('2d');
-      // context.clearRect(0, 0, canvas.width, canvas.height);
 
       canvas.style.cursor = "default";
       console.log("finished.");
@@ -449,9 +396,6 @@ function initDraw(canvas, portWidth, portHeight) {
       coords.boxHeight = Math.abs(parseInt(hToWRatio * coords.boxWidth));
       var y = (mouse.startY < mouse.y) ? mouse.startY : mouse.startY - coords.boxHeight;
       y -= yBuffer;
-
-      // coords.imgWidth = imgWidth;
-      // coords.imgHeight = imgHeight;
 
       if (oldImageSpecs.wZoomScale == 0 && oldImageSpecs.hZoomScale == 0) {
         coords.wZoomScale = fullImageWidth / imgWidth;  //every x pixel in canvas = this many pixels in orginal image
@@ -486,15 +430,9 @@ function initDraw(canvas, portWidth, portHeight) {
         var sliceY1 = oldImageSpecs.sliceY1 + (y * coords.hZoomScale);
       }
 
-
-
       coords.sliceX1 = sliceX1;
       coords.sliceY1 = sliceY1;
 
-      // oldSliceX1 = sliceX1;
-      // oldSliceX2 = sliceX2;
-      // oldSliceY1 = sliceY1;
-      // oldSliceY2 = sliceY2;
       hZoomScale = ((fullImageHeight - sliceY1 - sliceY2) / portHeight);
       console.log("fullImageHeight = " + fullImageHeight + ",    sliceY1 = " + sliceY1 + ",    sliceY2 = " + sliceY2 + ",    imgHeight = " + imgHeight + ",    portHeight = " + portHeight);
       console.log("new oldHZoomScale = " + hZoomScale);
