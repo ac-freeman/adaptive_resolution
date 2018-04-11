@@ -357,23 +357,64 @@ function initDraw(canvas, portWidth, portHeight) {
 
   canvas.onmousemove = function (e) {
     setMousePosition(e);
+
+    var img = document.getElementById('currentImage');
+    if (img.src === "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+      var img = document.getElementById('fullImage');
+    }
+    var imgWidth = img.clientWidth;
+    var imgHeight = img.clientHeight;
+    var xBuffer = parseInt((0.05 * $(window).width()) + (canvas.width-imgWidth)/2);
+    var yBuffer = parseInt((0.05 * $(window).height()) + (canvas.height-imgHeight)/2);
+
     document.getElementById('coordinatesText').innerHTML = "X: " + mouse.x + ", Y: " + mouse.y;
     if (element !== null) {
+      if (mouse.x < xBuffer) {
+        mouse.x = xBuffer
+      } else if (mouse.x > xBuffer + imgWidth -1) {
+        mouse.x = xBuffer + imgWidth -1;
+      }
       var xDiff = mouse.x - mouse.startX;
+      var yDiff = mouse.y - mouse.startY;
       var width = Math.abs(xDiff);
+      var height = width/ratio;
+      if (yDiff < 0 && mouse.startY - height < yBuffer) {
+        height = mouse.startY - yBuffer;
+        width = height * ratio;
+      } else if (yDiff >= 0 && mouse.startY + height > yBuffer + imgHeight) {
+        height = imgHeight - mouse.startY - yBuffer;
+        width = height * ratio;
+      }
+
       element.style.width = width + 'px';
       // element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-      var height = Math.abs(xDiff)/ratio;
+
       element.style.height = height + 'px';
       console.log('height=' + height+' width=' + width);
+      if (xDiff < 0) {
+        mouse.x = mouse.startX - width;
+      }
+      if (yDiff < 0) {
+        mouse.y = mouse.startY - height;
+      }
 
       element.style.left = (xDiff < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-      element.style.top = (mouse.y - mouse.startY < 0) ? mouse.startY - height + 'px' : mouse.startY + 'px';
+      element.style.top = (yDiff < 0) ? mouse.y + 'px' : mouse.startY + 'px';
     }
   }
 
   canvas.onclick = function (e) {
+    var img = document.getElementById('currentImage');
+    if (img.src === "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+      var img = document.getElementById('fullImage');
+    }
+    var imgWidth = img.clientWidth;
+    var imgHeight = img.clientHeight;
+    var xBuffer = parseInt((0.05 * $(window).width()) + (canvas.width-imgWidth)/2);
+    var yBuffer = parseInt((0.05 * $(window).height()) + (canvas.height-imgHeight)/2);
     if (element !== null) {
+
+      // if (mouse.x >= xBuffer && mouse.x < xBuffer + imgWidth -1 && mouse.y >= yBuffer && mouse.y <= yBuffer + imgHeight) {
 
       var oldImageSpecs = imageSpecsStack.pop();
 
@@ -381,15 +422,10 @@ function initDraw(canvas, portWidth, portHeight) {
       console.log("finished.");
       console.log("x="+mouse.startX+", y="+mouse.startY);
       console.log("x="+mouse.x+", y="+mouse.y);
-      var img = document.getElementById('currentImage');
-      if (img.src === "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
-        var img = document.getElementById('fullImage');
-      }
-      var imgWidth = img.clientWidth;
-      var imgHeight = img.clientHeight;
+
+
       var hToWRatio = canvas.height/canvas.width;
-      var xBuffer = parseInt((0.05 * $(window).width()) + (canvas.width-imgWidth)/2);
-      var yBuffer = parseInt((0.05 * $(window).height()) + (canvas.height-imgHeight)/2);
+
       var coords = {};
       var x = (mouse.startX < mouse.x) ? mouse.startX : mouse.x;
       x -= xBuffer;
@@ -447,18 +483,21 @@ function initDraw(canvas, portWidth, portHeight) {
       drawpage(coords);
       element.style.display = 'none';
       element = null;
+    // }
 
     } else {
       console.log("begun.");
       console.log("x="+mouse.x+", y="+mouse.y);
       mouse.startX = mouse.x;
       mouse.startY = mouse.y;
+      if (mouse.startX >= xBuffer && mouse.startX < xBuffer + imgWidth - 10 && mouse.startY >= yBuffer && mouse.startY <= yBuffer + imgHeight) {
       element = document.createElement('div');
       element.className = 'rectangle'
       element.style.left = mouse.x + 'px';
       element.style.top = mouse.y + 'px';
       canvas.appendChild(element)
       canvas.style.cursor = "crosshair";
+    }
     }
   }
 }
