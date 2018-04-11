@@ -5,20 +5,27 @@ var nj = require('numjs');
 var fs = require('fs');
 var chunkingStreams = require('chunking-streams');
 var cache = require('memory-cache');
+var app = express();
 
 router.post('/', function(req, res) {
 
-    console.log('cachesize: ' + cache.size());
-    img = cache.get('imagendarray');
-    console.log("Got from cache");
-    console.log(img.length);
-
+    // console.log('cachesize: ' + cache.size());
+    // img = cache.get('imagendarray');
+    // console.log("Got from cache");
+    // console.log(img.length);
+    // var imagesrc = path.join( __dirname, '/../public', 'images', 'IMG_7682.jpg');
+    // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
+console.log('body: ' + JSON.stringify(req.body));
+      console.log("ABOUT TO READ IMAGE");
+      // var img = nj.images.read(imagesrc);
+      // var ogimageshape = img.shape;
+    var img = req.app.get('img');
     var shape = img.shape;
     var fullImageWidth = shape[1];
     var fullImageHeight = shape[0];
 
   var obj = {};
-	console.log('body: ' + JSON.stringify(req.body));
+
 
   //first load
   if (Object.keys(req.body).length < 3) {
@@ -65,10 +72,12 @@ router.post('/', function(req, res) {
 
     img = nj.images.resize(img, wHeight,wWidth);
 
-    nj.images.save(img, 'resized.png');
-    console.log("Saved as png");
+    nj.images.save(img, 'resized.jpg');
+    console.log("Saved as jpg");
+    // nj.images.save(img, 'resized.png');
+    // console.log("Saved as png");
 
-    var  filepath = path.join( __dirname, '/../resized.png');
+    var  filepath = path.join( __dirname, '/../resized.jpg');
     res.sendFile(filepath); // Set disposition and send it.
   } else {
 
@@ -104,7 +113,11 @@ router.post('/', function(req, res) {
     var sliceY1 = req.body.sliceY1;
     var sliceY2 = req.body.sliceY2;
 
-    img = cache.get('imagendarray');
+    // img = cache.get('imagendarray');
+    // var imagesrc = path.join( __dirname, '/../public', 'images', 'IMG_7682.jpg');
+    // console.log("ABOUT TO READ IMAGE");
+    // var img = nj.images.read(imagesrc);
+    var shape = img.shape;
     console.log(img.shape);
 
       //the negative means you skip the last N rows/columns
@@ -125,10 +138,12 @@ router.post('/', function(req, res) {
     }
 
 
-    nj.images.save(img, 'resized.png');
-    console.log("Saved as png");
+    nj.images.save(img, 'resized.jpg');
+    console.log("Saved as jpg");
+    // nj.images.save(img, 'resized.png');
+    // console.log("Saved as png");
 
-    var  filepath = path.join( __dirname, '/../resized.png');
+    var  filepath = path.join( __dirname, '/../resized.jpg');
     res.sendFile(filepath); // Set disposition and send it.
 
 

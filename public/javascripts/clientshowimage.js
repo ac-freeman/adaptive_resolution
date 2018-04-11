@@ -414,8 +414,6 @@ function initDraw(canvas, portWidth, portHeight) {
     var yBuffer = parseInt((0.05 * $(window).height()) + (canvas.height-imgHeight)/2);
     if (element !== null) {
 
-      // if (mouse.x >= xBuffer && mouse.x < xBuffer + imgWidth -1 && mouse.y >= yBuffer && mouse.y <= yBuffer + imgHeight) {
-
       var oldImageSpecs = imageSpecsStack.pop();
 
       canvas.style.cursor = "default";
@@ -483,7 +481,6 @@ function initDraw(canvas, portWidth, portHeight) {
       drawpage(coords);
       element.style.display = 'none';
       element = null;
-    // }
 
     } else {
       console.log("begun.");
