@@ -256,6 +256,7 @@ function getImageShape() {
       fullImageWidth = jsonresponse.width;
       fullImageHeight = jsonresponse.height;
       console.log("WIDTH = " + fullImageWidth + "HEIGHT = " + fullImageHeight);
+      document.getElementById('infoText').innerHTML = "Orignal image resolution: " + fullImageWidth + " X " + fullImageHeight;
 
       drawpage({});
     }

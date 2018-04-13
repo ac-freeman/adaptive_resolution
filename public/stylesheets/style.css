@@ -53,6 +53,13 @@ a {
   left: 10%;
   z-index: 11;
 }
+#infoText {
+  position: fixed;
+  color: #000;
+  top: 95%;
+  left: 25%;
+  z-index: 11;
+}
 #resetZoomButton {
   position: fixed;
   left: 50%;

@@ -58,14 +58,13 @@ var getimageshape = require('./routes/getimageshape');
 
 var app = express();
 
-var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5813.jpg');
+var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_4003_stitch.jpg');
 // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
 
   console.log("ABOUT TO READ IMAGE");
   var img = nj.images.read(imagesrc);
    app.set('img', img);
-   // var shape = img.shape;
-   // cache.put('imgshape', shape);
+  console.log('DONE READING IMAGE');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
