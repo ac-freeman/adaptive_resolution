@@ -6,7 +6,7 @@ var fs = require('fs');
 var cache = require('memory-cache');
 var app = express();
 
-router.get('/', function(req, res) {
+router.get('/:imageId', function(req, res) {
   // img = cache.get('imagendarray');
   // console.log("Got from cache");
   // console.log(img.length);
@@ -19,8 +19,10 @@ router.get('/', function(req, res) {
   //   // var ogimageshape = img.shape;
   // var shape = img.shape;
   // var shape = cache.get('imgshape');
-  var img = req.app.get('img');
+console.log("getting image shapeeeee");
+  var img = req.app.get(req.params.imageId);
   var shape = img.shape;
+
   res.json({width : shape[1], height : shape[0]});
 });
 

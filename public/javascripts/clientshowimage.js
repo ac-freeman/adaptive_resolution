@@ -261,7 +261,7 @@ function getImageShape() {
       drawpage({});
     }
   };
-  xhttp.open("GET", "getimageshape", true);
+  xhttp.open("GET", "/../getimageshape/"+imageId, true);
 
   xhttp.send();
 }
@@ -284,6 +284,7 @@ function drawpage(coords){
   var data = {};
   data.width =    portWidth;// returns height of browser viewport
   data.height =  portHeight;
+  data.imageId = imageId;
 
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/img2', true);
@@ -308,9 +309,11 @@ function drawpage(coords){
     }
   };
 
-  if (Object.keys(coords).length > 2) {
+
+  if (Object.keys(coords).length > 3) {
     coords.wWidth = portWidth;
     coords.wHeight = portHeight;
+    coords.imageId = imageId;
     console.log(JSON.stringify(coords));
     console.log("requesting with coords");
     xhr.send(JSON.stringify(coords));

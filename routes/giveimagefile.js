@@ -19,7 +19,7 @@ console.log('body: ' + JSON.stringify(req.body));
       console.log("ABOUT TO READ IMAGE");
       // var img = nj.images.read(imagesrc);
       // var ogimageshape = img.shape;
-    var img = req.app.get('img');
+    var img = req.app.get(req.body.imageId);
     var shape = img.shape;
     var fullImageWidth = shape[1];
     var fullImageHeight = shape[0];
@@ -28,7 +28,7 @@ console.log('body: ' + JSON.stringify(req.body));
 
 
   //first load
-  if (Object.keys(req.body).length < 3) {
+  if (Object.keys(req.body).length < 4) {
     var wWidth = req.body.width;
     var wHeight = req.body.height;
 

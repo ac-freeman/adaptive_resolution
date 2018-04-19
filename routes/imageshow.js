@@ -6,106 +6,11 @@ var fs = require('fs');
 // var canvas = require('canvas');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/:imageId', function(req, res, next) {
   console.log(req.url);
-  // res.send('Show an image 2');
-  // var pathh = path.join( __dirname, '/../public','javascripts', 'clientshowimage.js' );
-
-  // var aa = nj.array([2,3,4]);
-  // var imagesrc = path.join( __dirname, '/../public', 'images', 'IMG_7853-HDR.txt');
-
-  // loadImage(imagesrc);
-
-
-  // var $image = new canvas.Image();
-	// $image.crossOrigin = 'Anonymous';
-  // $image.onload = function() {
-    // var start = new Date().valueOf();
-    // process images
-    // var img = nj.images.read($image);
-
-    // var img = nj.uint8(nj.images.read(imagesrc));
-
-    //////////////////////////////////////////////////////////
-    // var img = nj.images.read(imagesrc);
-    // var ogimageshape = img.shape;
-    // console.log(img);
-    // console.log(img.shape);
-    //
-    // img = img.slice([null,null,10],[null,null,10]);
-    // console.log(img);
-    // console.log("Shape: " + img.shape);
-    //
-    // var javaArr = img.tolist();
-//////////////////////////////////////////////////////////
-
-
-    // var uint8arr = Uint8Array.from(javaArr[0]);
-    // console.log(javaArr);
-    // console.log(javaArr instanceof Array);
-    // console.log(javaArr instanceof Uint8Array);
-    // console.log(uint8arr);
-    // console.log(uint8arr instanceof Array);
-    // console.log(uint8arr instanceof Uint8Array);
-
-
-//////////////////////////////////////////////////////////
-  //   const options = {encoding: 'hex'};
-  //   const wStream = fs.createWriteStream('HEX.txt', options);
-  //   for(var i = 0; i < javaArr.length; i++) {
-  //   var row = javaArr[i];
-  //   for(var j = 0; j < row.length; j++) {
-  //       var uint8arr = Uint8Array.from(row[j]);
-  //       var buf = Buffer.from(uint8arr);
-  //       wStream.write(buf);
-  //       // console.log(row[j]);
-  //       }
-  //   }
-  //   wStream.end();
-  //   wStream.on('finish', () => {
-  // console.error('All writes are now complete.');
-  //////////////////////////////////////////////////////////
-
-
-  // const rStream = fs.createReadStream('binbin.txt', options);
-  // streamToString(rStream, (data) => {
-  //   console.log(data);
-  // });
-
-
-  // rStream.on("data", function (chunk) {
-  //   chunks.push(chunk.toString);
-  // });
-  //
-  // // Send the buffer or you can put it into a var
-  // rStream.on("end", function () {
-  //   // res.send(Buffer.concat(chunks));
-  //     var ender = Buffer.concat(chunks);
-  //     console.log(ender);
-  // });
-
-//////////////////////////////////////////////////////////
-// });
-//////////////////////////////////////////////////////////
-
-  // // const buf = Buffer.from(javaArr);
-  // for (const b of buf) {
-  //   console.log(b);
-  // }
-
-
-    // fs.writeFile('binimage.bin', javaArr, (err) => {
-    //   if (err) throw err;
-    //   console.log('Binary image saved.');
-    // });
-    // nj.images.save(img, 'img.png');
-
-
-    // var pathh = path.join( __dirname, '/../views', 'imagepage.jade' );
-    // var path2 = path.join('img.png');
-    // res.render('imagepage', { name: 'examplenametest', aaa: aa, localimg: img, localimgshape: img.shape, pngimg: path2 });
+    console.log("imageId is set to " + req.params.imageId);
     var shape = [1629,1164,3];
-    res.render('imagepage', { name: 'examplenametest', imgShape: shape});
+    res.render('imagepage', { imageId: req.params.imageId});
     // res.render('imagepage', { name: 'examplenametest'});
 
 
