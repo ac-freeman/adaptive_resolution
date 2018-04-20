@@ -77,6 +77,10 @@ var app = express();
       imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5813.jpg');
       img = nj.images.read(imagesrc);
        app.set('image5', img);
+       imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
+       img = nj.images.read(imagesrc);
+        app.set('image6', img);
+
 
   console.log('DONE READING IMAGES');
 

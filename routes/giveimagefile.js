@@ -72,12 +72,12 @@ console.log('body: ' + JSON.stringify(req.body));
 
     img = nj.images.resize(img, wHeight,wWidth);
 
-    nj.images.save(img, 'resized.jpg');
+    nj.images.save(img, 'resized'+req.body.imageId+'.jpg');
     console.log("Saved as jpg");
     // nj.images.save(img, 'resized.png');
     // console.log("Saved as png");
 
-    var  filepath = path.join( __dirname, '/../resized.jpg');
+    var  filepath = path.join( __dirname, '/../resized'+req.body.imageId+'.jpg');
     res.sendFile(filepath); // Set disposition and send it.
   } else {
 
@@ -138,12 +138,12 @@ console.log('body: ' + JSON.stringify(req.body));
     }
 
 
-    nj.images.save(img, 'resized.jpg');
+    nj.images.save(img, 'resized'+req.body.imageId+'.jpg');
     console.log("Saved as jpg");
     // nj.images.save(img, 'resized.png');
     // console.log("Saved as png");
 
-    var  filepath = path.join( __dirname, '/../resized.jpg');
+    var  filepath = path.join( __dirname, '/../resized'+req.body.imageId+'.jpg');
     res.sendFile(filepath); // Set disposition and send it.
 
 

@@ -41,70 +41,72 @@ a {
   border: 2px solid #f00;
   position: fixed;
 }
-#coordinatesText {
+#bottomLeftContainer {
+  display: inline-block;
   position: fixed;
   top: 95%;
+  z-index: 11;
+}
+#coordinatesText {
+  display: inline-block;
+  padding: 0px 20px;
   z-index: 11;
 }
 #messageText {
-  position: fixed;
+  display: inline-block;
   color: #f00;
-  top: 95%;
-  left: 10%;
   z-index: 11;
 }
 #infoText {
-  position: fixed;
+  display: inline-block;
+  padding: 0px 20px;
   color: #000;
-  top: 95%;
-  left: 25%;
+  z-index: 11;
+}
+#bottomRightContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
   z-index: 11;
 }
 #resetZoomButton {
-  position: fixed;
-  left: 50%;
-  bottom: 0%;
-  transform: translate(-50%, -50%);
+  display: inline-block;
+  margin: 0px 10px;
   z-index: 11;
 }
 #undoLastZoomButton {
-  position: fixed;
-  left: 60%;
-  bottom: 0%;
-  transform: translate(-50%, -50%);
+  display: inline-block;
+  margin: 0px 10px;
   z-index: 11;
 }
-#leftButton {
-  position: fixed;
-  left: 68%;
-  bottom: 0%;
-  transform: translate(-50%, -50%);
+#directionsContainer {
+  display: inline-block;
+  margin: 0px 10px;
   z-index: 11;
-  padding: 3px 3px;
 }
 #upButton {
-  position: fixed;
-  left: 70%;
-  bottom: 1.4%;
-  transform: translate(-50%, -50%);
+  display: inline-block;
+  transform: translate(-50%, -55%);
   z-index: 11;
-  padding: 3px 3px;
+  padding: 1px 1px;
 }
 #downButton {
-  position: fixed;
-  left: 70%;
-  bottom: -1.4%;
-  transform: translate(-50%, -50%);
+  display: inline-block;
+  transform: translate(50%, 55%);
   z-index: 11;
-  padding: 3px 3px;
+  padding: 1px 1px;
 }
 #rightButton {
-  position: fixed;
-  left: 72%;
-  bottom: 0%;
-  transform: translate(-50%, -50%);
+  display: inline-block;
+  transform: translate(0%, 0%);
   z-index: 11;
-  padding: 3px 3px;
+  padding: 1px 1px;
+}
+#leftButton {
+  display: inline-block;
+  transform: translate(0%, 0%);
+  z-index: 11;
+  padding: 1px 1px;
 }
 h3 {
   display: inline-block;

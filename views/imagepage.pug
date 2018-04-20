@@ -16,13 +16,15 @@ block content
     img.image#fullImage(src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="" height="" )
     canvas#canvas(width='320', height='480', z-index='1')
     div#canvas2(width='' height='')
-  div
+  div.container#bottomLeftContainer
     h3#coordinatesText
     h3#messageText
     h4#infoText
+  div.container#bottomRightContainer
     button#resetZoomButton Reset zoom
     button#undoLastZoomButton Undo last movement
-    button#leftButton L
-    button#upButton U
-    button#downButton D
-    button#rightButton R
+    div.container#directionsContainer
+      button#rightButton R
+      button#upButton U
+      button#downButton D
+      button#leftButton L
