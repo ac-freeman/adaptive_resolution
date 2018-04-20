@@ -15,6 +15,42 @@ var imageStack = [];
 var imageSpecsStack = [];
 imageSpecsStack.push(imageSpecs);
 var img;
+var fullImg;
+var MOVING = false;
+document.onkeydown = function(e) {
+  e = e || window.event;
+  var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+  switch (charCode) {
+    case 37:
+      if(!MOVING){
+        moveLeft();
+      } else {
+        console.log("ALREADY MOVING");
+      }
+      break;
+    case 38:
+      if(!MOVING){
+        moveUp();
+      } else {
+        console.log("ALREADY MOVING");
+      }
+      break;
+    case 39:
+      if (!MOVING){
+        moveRight();
+      } else {
+        console.log("ALREADY MOVING");
+      }
+      break;
+    case 40:
+      if(!MOVING){
+        moveDown();
+      } else {
+        console.log("ALREADY MOVING");
+      }
+      break;
+  }
+};
 
 function getImageShape() {
   console.log("Window loaded");
@@ -59,194 +95,7 @@ function getImageShape() {
     }
   });
 
-  document.getElementById("rightButton").addEventListener("click", function(){
-    if (img.src != OGIMAGEURL){
-      console.log("MOVING RIGHT");
-      var imgBlob = imageStack.pop();
-      var alreadyLast = false;
-
-      var currentSpec = imageSpecsStack.pop();
-      if (typeof currentSpec !== 'undefined') {
-        let newSpec = Object.assign({}, currentSpec);
-        if (newSpec.sliceX2 - MOVECONSTANT > 1) {
-          newSpec.sliceX1 += MOVECONSTANT;
-          newSpec.sliceX2 -= MOVECONSTANT;
-          console.log('currentSpec.sliceX1 = ' + currentSpec.sliceX1 + ',    newSpec.sliceX1 = ' + newSpec.sliceX1);
-        } else if (newSpec.sliceX2 != 1){
-          newSpec.sliceX1 += currentSpec.sliceX2;
-          newSpec.sliceX2 = 1;
-        } else {
-          alreadyLast = true;
-        }
-
-        if (!alreadyLast) {
-
-
-          var coords2 = {};
-          coords2.boxWidth = portWidth;
-          coords2.boxHeight = portHeight;
-          coords2.wWidth = portWidth;
-          coords2.wHeight = portHeight
-          coords2.wZoomScale = newSpec.wZoomScale
-          coords2.hZoomScale = newSpec.hZoomScale;
-          coords2.sliceX1 = newSpec.sliceX1;
-          coords2.sliceX2 = newSpec.sliceX2
-          coords2.sliceY1 = newSpec.sliceY1;
-          coords2.sliceY2 = newSpec.sliceY2
-          imageSpecsStack.push(currentSpec);
-          imageSpecsStack.push(newSpec);
-          imageStack.push(imgBlob);
-          drawpage(coords2);
-        } else {
-          alert("Cannot move any more");
-        }
-      } else {
-        imageSpecsStack.push(currentSpec);
-      }
-
-    }
-  });
-
-  document.getElementById("leftButton").addEventListener("click", function(){
-    if (img.src != OGIMAGEURL){
-      console.log("MOVING LEFT");
-      var imgBlob = imageStack.pop();
-      var alreadyLast = false;
-
-      var currentSpec = imageSpecsStack.pop();
-      if (typeof currentSpec !== 'undefined') {
-        let newSpec = Object.assign({}, currentSpec);
-        if (newSpec.sliceX1 - MOVECONSTANT > 1) {
-          newSpec.sliceX1 -= MOVECONSTANT;
-          newSpec.sliceX2 += MOVECONSTANT;
-        } else if (newSpec.sliceX1 != 1){
-          newSpec.sliceX2 += currentSpec.sliceX1;
-          newSpec.sliceX1 = 1;
-        } else {
-          alreadyLast = true;
-        }
-
-        if (!alreadyLast) {
-
-
-          var coords2 = {};
-          coords2.boxWidth = portWidth;
-          coords2.boxHeight = portHeight;
-          coords2.wWidth = portWidth;
-          coords2.wHeight = portHeight
-          coords2.wZoomScale = newSpec.wZoomScale
-          coords2.hZoomScale = newSpec.hZoomScale;
-          coords2.sliceX1 = newSpec.sliceX1;
-          coords2.sliceX2 = newSpec.sliceX2
-          coords2.sliceY1 = newSpec.sliceY1;
-          coords2.sliceY2 = newSpec.sliceY2
-          imageSpecsStack.push(currentSpec);
-          imageSpecsStack.push(newSpec);
-          imageStack.push(imgBlob);
-          drawpage(coords2);
-        } else {
-          alert("Cannot move any more");
-        }
-      } else {
-        imageSpecsStack.push(currentSpec);
-      }
-
-    }
-  });
-
-  document.getElementById("upButton").addEventListener("click", function(){
-    if (img.src != OGIMAGEURL){
-      console.log("MOVING UP");
-      var imgBlob = imageStack.pop();
-      var alreadyLast = false;
-
-      var currentSpec = imageSpecsStack.pop();
-      if (typeof currentSpec !== 'undefined') {
-        let newSpec = Object.assign({}, currentSpec);
-        if (newSpec.sliceY1 - MOVECONSTANT > 1) {
-          newSpec.sliceY1 -= MOVECONSTANT;
-          newSpec.sliceY2 += MOVECONSTANT;
-        } else if (newSpec.sliceY1 != 1){
-          newSpec.sliceY2 += currentSpec.sliceY1;
-          newSpec.sliceY1 = 1;
-        } else {
-          alreadyLast = true;
-        }
-
-        if (!alreadyLast) {
-
-
-          var coords2 = {};
-          coords2.boxWidth = portWidth;
-          coords2.boxHeight = portHeight;
-          coords2.wWidth = portWidth;
-          coords2.wHeight = portHeight
-          coords2.wZoomScale = newSpec.wZoomScale
-          coords2.hZoomScale = newSpec.hZoomScale;
-          coords2.sliceX1 = newSpec.sliceX1;
-          coords2.sliceX2 = newSpec.sliceX2
-          coords2.sliceY1 = newSpec.sliceY1;
-          coords2.sliceY2 = newSpec.sliceY2
-          imageSpecsStack.push(currentSpec);
-          imageSpecsStack.push(newSpec);
-          imageStack.push(imgBlob);
-          drawpage(coords2);
-        } else {
-          alert("Cannot move any more");
-        }
-      } else {
-        imageSpecsStack.push(currentSpec);
-      }
-
-    }
-  });
-
-  document.getElementById("downButton").addEventListener("click", function(){
-    if (img.src != OGIMAGEURL){
-      console.log("MOVING DOWN");
-      var imgBlob = imageStack.pop();
-      var alreadyLast = false;
-
-      var currentSpec = imageSpecsStack.pop();
-      if (typeof currentSpec !== 'undefined') {
-        let newSpec = Object.assign({}, currentSpec);
-        if (newSpec.sliceY2 - MOVECONSTANT > 1) {
-          newSpec.sliceY1 += MOVECONSTANT;
-          newSpec.sliceY2 -= MOVECONSTANT;
-        } else if (newSpec.sliceY2 != 1){
-          newSpec.sliceY1 += currentSpec.sliceY2;
-          newSpec.sliceY2 = 1;
-        } else {
-          alreadyLast = true;
-        }
-
-        if (!alreadyLast) {
-
-
-          var coords2 = {};
-          coords2.boxWidth = portWidth;
-          coords2.boxHeight = portHeight;
-          coords2.wWidth = portWidth;
-          coords2.wHeight = portHeight
-          coords2.wZoomScale = newSpec.wZoomScale
-          coords2.hZoomScale = newSpec.hZoomScale;
-          coords2.sliceX1 = newSpec.sliceX1;
-          coords2.sliceX2 = newSpec.sliceX2
-          coords2.sliceY1 = newSpec.sliceY1;
-          coords2.sliceY2 = newSpec.sliceY2
-          imageSpecsStack.push(currentSpec);
-          imageSpecsStack.push(newSpec);
-          imageStack.push(imgBlob);
-          drawpage(coords2);
-        } else {
-          alert("Cannot move any more");
-        }
-      } else {
-        imageSpecsStack.push(currentSpec);
-      }
-
-    }
-  });
+  initiateButtonListeners();
 
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -306,6 +155,7 @@ function drawpage(coords){
       }
 
       console.log("Image loaded");
+      MOVING = false;
     }
   };
 
@@ -492,13 +342,234 @@ function initDraw(canvas, portWidth, portHeight) {
       mouse.startX = mouse.x;
       mouse.startY = mouse.y;
       if (mouse.startX >= xBuffer && mouse.startX < xBuffer + imgWidth - 10 && mouse.startY >= yBuffer && mouse.startY <= yBuffer + imgHeight) {
-      element = document.createElement('div');
-      element.className = 'rectangle'
-      element.style.left = mouse.x + 'px';
-      element.style.top = mouse.y + 'px';
-      canvas.appendChild(element)
-      canvas.style.cursor = "crosshair";
+        element = document.createElement('div');
+        element.className = 'rectangle'
+        element.style.left = mouse.x + 'px';
+        element.style.top = mouse.y + 'px';
+        canvas.appendChild(element)
+        canvas.style.cursor = "crosshair";
+      }
     }
+  }
+
+}
+
+
+function initiateButtonListeners() {
+  document.getElementById("rightButton").addEventListener("click", function(){
+    moveRight();
+  });
+
+  document.getElementById("leftButton").addEventListener("click", function(){
+    moveLeft();
+  });
+
+  document.getElementById("upButton").addEventListener("click", function(){
+    moveUp();
+  });
+
+  document.getElementById("downButton").addEventListener("click", function(){
+    moveDown();
+  });
+}
+
+function moveRight() {
+  MOVING = true;
+  if (img.src != OGIMAGEURL){
+    console.log("MOVING RIGHT");
+    var imgBlob = imageStack.pop();
+    var alreadyLast = false;
+
+    var currentSpec = imageSpecsStack.pop();
+    if (typeof currentSpec !== 'undefined') {
+      let newSpec = Object.assign({}, currentSpec);
+      if (newSpec.sliceX2 - MOVECONSTANT > 1) {
+        newSpec.sliceX1 += MOVECONSTANT;
+        newSpec.sliceX2 -= MOVECONSTANT;
+        console.log('currentSpec.sliceX1 = ' + currentSpec.sliceX1 + ',    newSpec.sliceX1 = ' + newSpec.sliceX1);
+      } else if (newSpec.sliceX2 != 1){
+        newSpec.sliceX1 += currentSpec.sliceX2;
+        newSpec.sliceX2 = 1;
+      } else {
+        alreadyLast = true;
+      }
+
+      if (!alreadyLast) {
+
+
+        var coords2 = {};
+        coords2.boxWidth = portWidth;
+        coords2.boxHeight = portHeight;
+        coords2.wWidth = portWidth;
+        coords2.wHeight = portHeight
+        coords2.wZoomScale = newSpec.wZoomScale
+        coords2.hZoomScale = newSpec.hZoomScale;
+        coords2.sliceX1 = newSpec.sliceX1;
+        coords2.sliceX2 = newSpec.sliceX2
+        coords2.sliceY1 = newSpec.sliceY1;
+        coords2.sliceY2 = newSpec.sliceY2
+        imageSpecsStack.push(currentSpec);
+        imageSpecsStack.push(newSpec);
+        imageStack.push(imgBlob);
+        drawpage(coords2);
+      } else {
+        MOVING = false;
+        alert("Cannot move any more");
+      }
+    } else {
+      imageSpecsStack.push(currentSpec);
+      MOVING = false;
     }
+
+  }
+}
+
+function moveDown() {
+  MOVING = true;
+  if (img.src != OGIMAGEURL){
+    console.log("MOVING DOWN");
+    var imgBlob = imageStack.pop();
+    var alreadyLast = false;
+
+    var currentSpec = imageSpecsStack.pop();
+    if (typeof currentSpec !== 'undefined') {
+      let newSpec = Object.assign({}, currentSpec);
+      if (newSpec.sliceY2 - MOVECONSTANT > 1) {
+        newSpec.sliceY1 += MOVECONSTANT;
+        newSpec.sliceY2 -= MOVECONSTANT;
+      } else if (newSpec.sliceY2 != 1){
+        newSpec.sliceY1 += currentSpec.sliceY2;
+        newSpec.sliceY2 = 1;
+      } else {
+        alreadyLast = true;
+      }
+
+      if (!alreadyLast) {
+
+
+        var coords2 = {};
+        coords2.boxWidth = portWidth;
+        coords2.boxHeight = portHeight;
+        coords2.wWidth = portWidth;
+        coords2.wHeight = portHeight
+        coords2.wZoomScale = newSpec.wZoomScale
+        coords2.hZoomScale = newSpec.hZoomScale;
+        coords2.sliceX1 = newSpec.sliceX1;
+        coords2.sliceX2 = newSpec.sliceX2
+        coords2.sliceY1 = newSpec.sliceY1;
+        coords2.sliceY2 = newSpec.sliceY2
+        imageSpecsStack.push(currentSpec);
+        imageSpecsStack.push(newSpec);
+        imageStack.push(imgBlob);
+        drawpage(coords2);
+      } else {
+        MOVING = false;
+        alert("Cannot move any more");
+      }
+    } else {
+      MOVING = false;
+      imageSpecsStack.push(currentSpec);
+    }
+
+  }
+}
+
+function moveLeft() {
+  MOVING = true;
+  if (img.src != OGIMAGEURL){
+    console.log("MOVING LEFT");
+    var imgBlob = imageStack.pop();
+    var alreadyLast = false;
+
+    var currentSpec = imageSpecsStack.pop();
+    if (typeof currentSpec !== 'undefined') {
+      let newSpec = Object.assign({}, currentSpec);
+      if (newSpec.sliceX1 - MOVECONSTANT > 1) {
+        newSpec.sliceX1 -= MOVECONSTANT;
+        newSpec.sliceX2 += MOVECONSTANT;
+      } else if (newSpec.sliceX1 != 1){
+        newSpec.sliceX2 += currentSpec.sliceX1;
+        newSpec.sliceX1 = 1;
+      } else {
+        alreadyLast = true;
+      }
+
+      if (!alreadyLast) {
+
+
+        var coords2 = {};
+        coords2.boxWidth = portWidth;
+        coords2.boxHeight = portHeight;
+        coords2.wWidth = portWidth;
+        coords2.wHeight = portHeight
+        coords2.wZoomScale = newSpec.wZoomScale
+        coords2.hZoomScale = newSpec.hZoomScale;
+        coords2.sliceX1 = newSpec.sliceX1;
+        coords2.sliceX2 = newSpec.sliceX2
+        coords2.sliceY1 = newSpec.sliceY1;
+        coords2.sliceY2 = newSpec.sliceY2
+        imageSpecsStack.push(currentSpec);
+        imageSpecsStack.push(newSpec);
+        imageStack.push(imgBlob);
+        drawpage(coords2);
+      } else {
+        MOVING = false;
+        alert("Cannot move any more");
+      }
+    } else {
+      MOVING = false;
+      imageSpecsStack.push(currentSpec);
+    }
+
+  }
+}
+
+function moveUp() {
+  MOVING = true;
+  if (img.src != OGIMAGEURL){
+    console.log("MOVING UP");
+    var imgBlob = imageStack.pop();
+    var alreadyLast = false;
+
+    var currentSpec = imageSpecsStack.pop();
+    if (typeof currentSpec !== 'undefined') {
+      let newSpec = Object.assign({}, currentSpec);
+      if (newSpec.sliceY1 - MOVECONSTANT > 1) {
+        newSpec.sliceY1 -= MOVECONSTANT;
+        newSpec.sliceY2 += MOVECONSTANT;
+      } else if (newSpec.sliceY1 != 1){
+        newSpec.sliceY2 += currentSpec.sliceY1;
+        newSpec.sliceY1 = 1;
+      } else {
+        alreadyLast = true;
+      }
+
+      if (!alreadyLast) {
+
+
+        var coords2 = {};
+        coords2.boxWidth = portWidth;
+        coords2.boxHeight = portHeight;
+        coords2.wWidth = portWidth;
+        coords2.wHeight = portHeight
+        coords2.wZoomScale = newSpec.wZoomScale
+        coords2.hZoomScale = newSpec.hZoomScale;
+        coords2.sliceX1 = newSpec.sliceX1;
+        coords2.sliceX2 = newSpec.sliceX2
+        coords2.sliceY1 = newSpec.sliceY1;
+        coords2.sliceY2 = newSpec.sliceY2
+        imageSpecsStack.push(currentSpec);
+        imageSpecsStack.push(newSpec);
+        imageStack.push(imgBlob);
+        drawpage(coords2);
+      } else {
+        MOVING = false;
+        alert("Cannot move any more");
+      }
+    } else {
+      MOVING = false;
+      imageSpecsStack.push(currentSpec);
+    }
+
   }
 }
