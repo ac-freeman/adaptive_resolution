@@ -2,7 +2,7 @@ window.addEventListener ?
 window.addEventListener("load",getImageShape,false) :
 window.attachEvent && window.attachEvent("onload",getImageShape);
 var OGIMAGEURL;
-var MOVECONSTANT = 500;
+
 var fullImageWidth;
 var fullImageHeight;
 
@@ -10,7 +10,11 @@ var imageSpecs = {sliceX1: 0, sliceX2:0, sliceY1:0,sliceY2:0,wZoomScale:0,hZoomS
 
 
 var portWidth = parseInt(0.9 * $(window).width());
+var MOVECONSTANT_RL = parseInt(portWidth/2);
 var portHeight = parseInt(0.9 * $(window).height());
+var MOVECONSTANT_UD = parseInt(portHeight/2);
+
+var MOVERATIO = 2;
 var imageStack = [];
 var imageSpecsStack = [];
 imageSpecsStack.push(imageSpecs);
@@ -319,6 +323,9 @@ function initDraw(canvas, portWidth, portHeight) {
         var sliceY1 = oldImageSpecs.sliceY1 + (y * coords.hZoomScale);
       }
 
+      MOVECONSTANT_RL = parseInt((fullImageWidth - sliceX2 - sliceX1)/MOVERATIO);
+      MOVECONSTANT_UD = parseInt((fullImageHeight - sliceY2 - sliceY1)/MOVERATIO);
+
       coords.sliceX1 = sliceX1;
       coords.sliceY1 = sliceY1;
 
@@ -374,6 +381,7 @@ function initiateButtonListeners() {
 }
 
 function moveRight() {
+  console.log("MOVECONSTANT_RL = " + MOVECONSTANT_RL);
   MOVING = true;
   if (img.src != OGIMAGEURL){
     console.log("MOVING RIGHT");
@@ -383,9 +391,9 @@ function moveRight() {
     var currentSpec = imageSpecsStack.pop();
     if (typeof currentSpec !== 'undefined') {
       let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceX2 - MOVECONSTANT > 1) {
-        newSpec.sliceX1 += MOVECONSTANT;
-        newSpec.sliceX2 -= MOVECONSTANT;
+      if (newSpec.sliceX2 - MOVECONSTANT_RL > 1) {
+        newSpec.sliceX1 += MOVECONSTANT_RL;
+        newSpec.sliceX2 -= MOVECONSTANT_RL;
         console.log('currentSpec.sliceX1 = ' + currentSpec.sliceX1 + ',    newSpec.sliceX1 = ' + newSpec.sliceX1);
       } else if (newSpec.sliceX2 != 1){
         newSpec.sliceX1 += currentSpec.sliceX2;
@@ -426,6 +434,7 @@ function moveRight() {
 
 function moveDown() {
   MOVING = true;
+
   if (img.src != OGIMAGEURL){
     console.log("MOVING DOWN");
     var imgBlob = imageStack.pop();
@@ -434,9 +443,9 @@ function moveDown() {
     var currentSpec = imageSpecsStack.pop();
     if (typeof currentSpec !== 'undefined') {
       let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceY2 - MOVECONSTANT > 1) {
-        newSpec.sliceY1 += MOVECONSTANT;
-        newSpec.sliceY2 -= MOVECONSTANT;
+      if (newSpec.sliceY2 - MOVECONSTANT_UD > 1) {
+        newSpec.sliceY1 += MOVECONSTANT_UD;
+        newSpec.sliceY2 -= MOVECONSTANT_UD;
       } else if (newSpec.sliceY2 != 1){
         newSpec.sliceY1 += currentSpec.sliceY2;
         newSpec.sliceY2 = 1;
@@ -484,9 +493,9 @@ function moveLeft() {
     var currentSpec = imageSpecsStack.pop();
     if (typeof currentSpec !== 'undefined') {
       let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceX1 - MOVECONSTANT > 1) {
-        newSpec.sliceX1 -= MOVECONSTANT;
-        newSpec.sliceX2 += MOVECONSTANT;
+      if (newSpec.sliceX1 - MOVECONSTANT_RL > 1) {
+        newSpec.sliceX1 -= MOVECONSTANT_RL;
+        newSpec.sliceX2 += MOVECONSTANT_RL;
       } else if (newSpec.sliceX1 != 1){
         newSpec.sliceX2 += currentSpec.sliceX1;
         newSpec.sliceX1 = 1;
@@ -534,9 +543,9 @@ function moveUp() {
     var currentSpec = imageSpecsStack.pop();
     if (typeof currentSpec !== 'undefined') {
       let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceY1 - MOVECONSTANT > 1) {
-        newSpec.sliceY1 -= MOVECONSTANT;
-        newSpec.sliceY2 += MOVECONSTANT;
+      if (newSpec.sliceY1 - MOVECONSTANT_UD > 1) {
+        newSpec.sliceY1 -= MOVECONSTANT_UD;
+        newSpec.sliceY2 += MOVECONSTANT_UD;
       } else if (newSpec.sliceY1 != 1){
         newSpec.sliceY2 += currentSpec.sliceY1;
         newSpec.sliceY1 = 1;
