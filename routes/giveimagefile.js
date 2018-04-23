@@ -26,17 +26,8 @@ function logToFile(logFileName, dataToWrite) {
 router.post('/', function(req, res) {
   var startTS = new Date().getTime();
 
-
-    // console.log('cachesize: ' + cache.size());
-    // img = cache.get('imagendarray');
-    // console.log("Got from cache");
-    // console.log(img.length);
-    // var imagesrc = path.join( __dirname, '/../public', 'images', 'IMG_7682.jpg');
-    // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
-console.log('body: ' + JSON.stringify(req.body));
-      console.log("ABOUT TO READ IMAGE");
-      // var img = nj.images.read(imagesrc);
-      // var ogimageshape = img.shape;
+// console.log('body: ' + JSON.stringify(req.body));
+//       console.log("ABOUT TO READ IMAGE");
 
     var img = req.app.get(req.body.imageId);
     var shape = img.shape;
@@ -92,7 +83,7 @@ console.log('body: ' + JSON.stringify(req.body));
     img = nj.images.resize(img, wHeight,wWidth);
 
     nj.images.save(img, 'resized'+req.body.imageId+'.jpg');
-    console.log("Saved as jpg");
+    // console.log("Saved as jpg");
     // nj.images.save(img, 'resized.png');
     // console.log("Saved as png");
     const stats = fs.statSync('resized' + req.body.imageId +'.jpg');
@@ -102,42 +93,23 @@ console.log('body: ' + JSON.stringify(req.body));
     logToFile("log_full.csv",startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + "," + req.body.width + "," + req.body.height + "," + wWidth + "," + wHeight + ","  + stats.size + "," + doneProcessingTS);
   } else {
 
-    console.log("second load");
-    // var imgWidth = req.body.imgWidth;
-    // var imgHeight = req.body.imgHeight;
-    // var boxX = req.body.x;
-    // var boxY = req.body.y;
+    // console.log("second load");
+
     var boxWidth = req.body.boxWidth;
     var boxHeight = req.body.boxHeight;
     var wWidth = req.body.wWidth;
     var wHeight = req.body.wHeight;
 
-    // var xBuffer = (wWidth - imgWidth) / 2;
-    // var xBuffer = 0;
-    // boxX = boxX - xBuffer;
-    // console.log('boxX = ' + boxX);
-    // var yBuffer = (wHeight - imgHeight) / 2;
-    // var yBuffer = 0;
-    // boxY = boxY - yBuffer;
-    // console.log('boxY = ' + boxY);
-
-    // var wZoomScale = fullImageWidth / imgWidth;
     var wZoomScale = req.body.wZoomScale;
-    // var hZoomScale = fullImageHeight / imgHeight;
     var hZoomScale = req.body.hZoomScale;
 
-    // sliceX2 = fullImageWidth - ((boxWidth + boxX) * wZoomScale);
     var sliceX1 = req.body.sliceX1;
     var sliceX2 = req.body.sliceX2;
 
-    // sliceY2 = fullImageHeight - ((boxHeight + boxY) * hZoomScale);
     var sliceY1 = req.body.sliceY1;
     var sliceY2 = req.body.sliceY2;
 
-    // img = cache.get('imagendarray');
-    // var imagesrc = path.join( __dirname, '/../public', 'images', 'IMG_7682.jpg');
-    // console.log("ABOUT TO READ IMAGE");
-    // var img = nj.images.read(imagesrc);
+
     var shape = img.shape;
     console.log(img.shape);
 
@@ -160,9 +132,7 @@ console.log('body: ' + JSON.stringify(req.body));
 
 
     nj.images.save(img, 'resized'+req.body.imageId+'.jpg');
-    console.log("Saved as jpg");
-    // nj.images.save(img, 'resized.png');
-    // console.log("Saved as png");
+
     const stats = fs.statSync('resized' + req.body.imageId +'.jpg');
     var  filepath = path.join( __dirname, '/../resized'+req.body.imageId+'.jpg');
     var doneProcessingTS = new Date().getTime();

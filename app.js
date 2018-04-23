@@ -14,7 +14,6 @@ var bodyParser = require("body-parser");
 var increaseMemoryLimit = require("increase-memory-limit");
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var imageshow = require('./routes/imageshow');
 var imagestream = require('./routes/giveimagestream');
 var giveimagefile = require('./routes/giveimagefile');
@@ -45,7 +44,9 @@ var app = express();
        imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
        img = nj.images.read(imagesrc);
         app.set('image6', img);
-
+        imagesrc = path.join( __dirname, '/public', 'images', 'IMG_9191_stitch.jpg');
+        img = nj.images.read(imagesrc);
+         app.set('image7', img);
 
   console.log('DONE READING IMAGES');
 
@@ -63,7 +64,6 @@ app.use(stylus.middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/imageshow', imageshow);
 app.use('/img1', imagestream);
 app.use('/img2', giveimagefile);
@@ -80,13 +80,28 @@ app.use(bodyParser.json());
 
 
 
-app.get('/img/resized.png', function(req, res) {
 
-  res.sendFile(path.join(__dirname,'img.png'))
+app.get('/original/image1', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_4003_stitch.jpg'))
 });
-
-
-
+app.get('/original/image2', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_7682.jpg'))
+});
+app.get('/original/image3', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_7853-HDR.jpg'))
+});
+app.get('/original/image4', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_8714_stitch.jpg'))
+});
+app.get('/original/image5', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_5813.jpg'))
+});
+app.get('/original/image6', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_8843.jpg'))
+});
+app.get('/original/image7', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_9191_stitch.jpg'))
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
