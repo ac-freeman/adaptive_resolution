@@ -13,9 +13,9 @@ var app = express();
 const logDir = path.join(__dirname, 'logs');
 function logToFile(logFileName, dataToWrite) {
     const logFilePath = path.join(logDir, logFileName);
-    const timestamp = new Date().getTime();
+    // const timestamp = new Date().getTime();
     // const data = `${timestamp}, ${dataToWrite}${eol}`;
-    const data = `${dataToWrite}, ${timestamp}${eol}`;
+    const data = `${dataToWrite}, ${eol}`;
     fs.appendFile(logFilePath, data, (error) => {
         if (error) {
             console.error(`Write error to ${logFileName}: ${error.message}`);
@@ -99,7 +99,7 @@ console.log('body: ' + JSON.stringify(req.body));
     var  filepath = path.join( __dirname, '/../resized'+req.body.imageId+'.jpg');
     var doneProcessingTS = new Date().getTime();
     res.sendFile(filepath); // Set disposition and send it.
-    logToFile("testFile.csv",startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + "," +  boxWidth +"," + boxHeight + "," + sliceX1 + "," +sliceX2 + "," + sliceY1 + "," + sliceY2 + "," + stats.size + "," + doneProcessingTS);
+    logToFile("log_full.csv",startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + "," + req.body.width + "," + req.body.height + "," + wWidth + "," + wHeight + ","  + stats.size + "," + doneProcessingTS);
   } else {
 
     console.log("second load");
@@ -168,7 +168,8 @@ console.log('body: ' + JSON.stringify(req.body));
     var doneProcessingTS = new Date().getTime();
 
     res.sendFile(filepath); // Set disposition and send it.
-    logToFile("testFile.csv", startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + ","  +  boxWidth +"," + boxHeight + "," + sliceX1 + "," +sliceX2 + "," + sliceY1 + "," + sliceY2 + "," + stats.size + "," + doneProcessingTS);
+    logToFile("log_cropped.csv", startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + "," + newWidth + "," + newHeight + "," +  boxWidth +"," + boxHeight + "," + sliceX1 + "," +sliceX2 + ","
+    + sliceY1 + "," + sliceY2 + "," + stats.size + "," + doneProcessingTS);
 
   }
 
