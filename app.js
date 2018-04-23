@@ -9,44 +9,9 @@ var console = require('console');
 var nj = require('numjs');
 var fs = require('fs');
 var cache = require('memory-cache');
-// var cache = require( "node-cache" );
-// const myCache = new cache();
+
 var bodyParser = require("body-parser");
 var increaseMemoryLimit = require("increase-memory-limit");
-// var sharp = require('sharp');
-// var canvas = require('canvas');
-
-////////////////////////////////////////////////////////////
-//    Read images and add to cache when project starts    //
-////////////////////////////////////////////////////////////
-
-
-  // var ogimageshape = img.shape;
-
-
-// var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5813.jpg');
-// // var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
-//
-//   console.log("ABOUT TO READ IMAGE");
-//   var img = nj.images.read(imagesrc);
-//   var ogimageshape = img.shape;
-//   console.log("DID READ IMAGE");
-//   // console.log(img);
-//   console.log(img.shape);
-
-  // cache.put('imagendarray', img);
-  // myCache.put('imagendarray', img);
-//   myCache.set( 'imagendarray', img, function( err, success ){
-//   if( !err && success ){
-//     console.log( success );
-//     // true
-//     // ... do something ...
-//   }
-// });
-//   console.log("it's in cache");
-
-  // console.log('cachesize: ' + cache.size());
-//////////////////////////////////////////////////////
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -59,7 +24,7 @@ var getimageshape = require('./routes/getimageshape');
 var app = express();
 
 
-// var imagesrc = path.join( __dirname, '/public', 'images', 'paint.jpg');
+
 
   console.log("ABOUT TO READ IMAGES");
   var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_4003_stitch.jpg');

@@ -3,11 +3,29 @@ var router = express.Router();
 var path = require('path');
 var nj = require('numjs');
 var fs = require('fs');
+const eol = require('os').EOL;
 var chunkingStreams = require('chunking-streams');
 var cache = require('memory-cache');
 var app = express();
 
+
+//http://thisdavej.com/node-js-iot-logging-data-that-is-out-of-this-world/
+const logDir = path.join(__dirname, 'logs');
+function logToFile(logFileName, dataToWrite) {
+    const logFilePath = path.join(logDir, logFileName);
+    const timestamp = new Date().getTime();
+    // const data = `${timestamp}, ${dataToWrite}${eol}`;
+    const data = `${dataToWrite}, ${timestamp}${eol}`;
+    fs.appendFile(logFilePath, data, (error) => {
+        if (error) {
+            console.error(`Write error to ${logFileName}: ${error.message}`);
+        }
+    });
+}
+
 router.post('/', function(req, res) {
+  var startTS = new Date().getTime();
+
 
     // console.log('cachesize: ' + cache.size());
     // img = cache.get('imagendarray');
@@ -19,6 +37,7 @@ console.log('body: ' + JSON.stringify(req.body));
       console.log("ABOUT TO READ IMAGE");
       // var img = nj.images.read(imagesrc);
       // var ogimageshape = img.shape;
+
     var img = req.app.get(req.body.imageId);
     var shape = img.shape;
     var fullImageWidth = shape[1];
@@ -76,9 +95,11 @@ console.log('body: ' + JSON.stringify(req.body));
     console.log("Saved as jpg");
     // nj.images.save(img, 'resized.png');
     // console.log("Saved as png");
-
+    const stats = fs.statSync('resized' + req.body.imageId +'.jpg');
     var  filepath = path.join( __dirname, '/../resized'+req.body.imageId+'.jpg');
+    var doneProcessingTS = new Date().getTime();
     res.sendFile(filepath); // Set disposition and send it.
+    logToFile("testFile.csv",startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + "," +  boxWidth +"," + boxHeight + "," + sliceX1 + "," +sliceX2 + "," + sliceY1 + "," + sliceY2 + "," + stats.size + "," + doneProcessingTS);
   } else {
 
     console.log("second load");
@@ -142,10 +163,12 @@ console.log('body: ' + JSON.stringify(req.body));
     console.log("Saved as jpg");
     // nj.images.save(img, 'resized.png');
     // console.log("Saved as png");
-
+    const stats = fs.statSync('resized' + req.body.imageId +'.jpg');
     var  filepath = path.join( __dirname, '/../resized'+req.body.imageId+'.jpg');
-    res.sendFile(filepath); // Set disposition and send it.
+    var doneProcessingTS = new Date().getTime();
 
+    res.sendFile(filepath); // Set disposition and send it.
+    logToFile("testFile.csv", startTS +"," + req.body.imageId+"," +fullImageWidth + "," +fullImageHeight + ","  +  boxWidth +"," + boxHeight + "," + sliceX1 + "," +sliceX2 + "," + sliceY1 + "," + sliceY2 + "," + stats.size + "," + doneProcessingTS);
 
   }
 

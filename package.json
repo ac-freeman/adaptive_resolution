@@ -19,6 +19,7 @@
     "node-cache": "^4.2.0",
     "npm": "^5.8.0",
     "numjs": "^0.15.1",
+    "object-sizeof": "^1.2.0",
     "pug": "^2.0.0-rc.4",
     "serve-favicon": "~2.4.5",
     "sharp": "^0.20.1",
