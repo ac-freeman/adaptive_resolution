@@ -8,7 +8,6 @@ var app = express();
 
 router.get('/:imageId', function(req, res) {
 
-console.log("getting image shapeeeee");
   var img = req.app.get(req.params.imageId);
   var shape = img.shape;
 

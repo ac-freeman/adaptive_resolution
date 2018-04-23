@@ -57,28 +57,23 @@ router.post('/', function(req, res) {
     if (fullImageWidth > fullImageHeight) {
       isPortrait = false;
       ratio = fullImageHeight / fullImageWidth;
-      console.log('first wHeight = ' + wHeight + ',    wWidth = ' + wWidth);
       wHeight = parseInt( wWidth * ratio);
       if (wHeight > req.body.height) {
-        console.log('wHeight > bodyHeight');
         var shrinkRatio = (req.body.height) / wHeight;
         wHeight = req.body.height;
         wWidth = parseInt(wWidth * shrinkRatio);
-        console.log('wHeight = ' + wHeight + ',    wWidth = ' + wWidth );
       }
     } else {
       ratio = fullImageWidth / fullImageHeight;
       wWidth = parseInt(wHeight * ratio);
       if (wWidth > req.body.width) {
-        console.log('wWidth > bodyWidth');
         var shrinkRatio = (req.body.width) / wWidth;
         wWidth = req.body.width;
         wHeight = parseInt(wHeight * shrinkRatio);
-        console.log('wHeight = ' + wHeight + ',    wWidth = ' + wWidth );
       }
     }
 
-    console.log(shape);
+
 
     img = nj.images.resize(img, wHeight,wWidth);
 
@@ -111,7 +106,6 @@ router.post('/', function(req, res) {
 
 
     var shape = img.shape;
-    console.log(img.shape);
 
       //the negative means you skip the last N rows/columns
     img = img.slice([sliceY1,-sliceY2],[sliceX1,-sliceX2]);
