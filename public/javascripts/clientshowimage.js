@@ -21,6 +21,7 @@ imageSpecsStack.push(imageSpecs);
 var img;
 var fullImg;
 var MOVING = false;
+var TOTALBANDWIDTH = 0;
 document.onkeydown = function(e) {
   e = e || window.event;
   var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
@@ -156,8 +157,19 @@ function drawpage(coords){
         imageStack.push(img.src);
         fullImg.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         img.src = window.URL.createObjectURL(blob);
-      }
 
+      }
+      TOTALBANDWIDTH += blob.size;
+      console.log('TOTAL BANDWIDTH = ' + TOTALBANDWIDTH);
+      var bandwidth = TOTALBANDWIDTH/1024;
+      if (bandwidth >= 1024) {
+          bandwidth = Math.round((bandwidth/1024)*100)/100;
+          document.getElementById('bandwidthText').innerHTML = "Total image bandwidth: " + bandwidth + "MB";
+      }
+      else {
+        bandwidth = Math.round(bandwidth*100)/100;
+        document.getElementById('bandwidthText').innerHTML = "Total image bandwidth: " + bandwidth + "kB";
+}
       console.log("Image loaded");
       MOVING = false;
     }

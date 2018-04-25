@@ -52,15 +52,21 @@ a {
   padding: 0px 20px;
   z-index: 11;
 }
-#messageText {
-  display: inline-block;
-  color: #f00;
-  z-index: 11;
-}
 #infoText {
   display: inline-block;
   padding: 0px 20px;
   color: #000;
+  z-index: 11;
+}
+#bandwidthText {
+  display: inline-block;
+  padding: 0px 20px;
+  color: #000;
+  z-index: 11;
+}
+#messageText {
+  display: inline-block;
+  color: #f00;
   z-index: 11;
 }
 #bottomRightContainer {
