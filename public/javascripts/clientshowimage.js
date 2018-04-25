@@ -28,28 +28,28 @@ document.onkeydown = function(e) {
   switch (charCode) {
     case 37:
       if(!MOVING){
-        moveLeft();
+        moveDirection('L');
       } else {
         console.log("ALREADY MOVING");
       }
       break;
     case 38:
       if(!MOVING){
-        moveUp();
+        moveDirection('U');
       } else {
         console.log("ALREADY MOVING");
       }
       break;
     case 39:
       if (!MOVING){
-        moveRight();
+        moveDirection('R');
       } else {
         console.log("ALREADY MOVING");
       }
       break;
     case 40:
       if(!MOVING){
-        moveDown();
+        moveDirection('D');
       } else {
         console.log("ALREADY MOVING");
       }
@@ -257,7 +257,6 @@ function initDraw(canvas, portWidth, portHeight) {
       }
 
       element.style.width = width + 'px';
-      // element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
 
       element.style.height = height + 'px';
       console.log('height=' + height+' width=' + width);
@@ -376,197 +375,85 @@ function initDraw(canvas, portWidth, portHeight) {
 
 function initiateButtonListeners() {
   document.getElementById("rightButton").addEventListener("click", function(){
-    moveRight();
+    moveDirection('R');
   });
 
   document.getElementById("leftButton").addEventListener("click", function(){
-    moveLeft();
+    moveDirection('L');
   });
 
   document.getElementById("upButton").addEventListener("click", function(){
-    moveUp();
+    moveDirection('U');
   });
 
   document.getElementById("downButton").addEventListener("click", function(){
-    moveDown();
+    moveDirection('D');
   });
 }
 
-function moveRight() {
-  console.log("MOVECONSTANT_RL = " + MOVECONSTANT_RL);
+function moveDirection(direction) {
   MOVING = true;
   if (img.src != OGIMAGEURL){
-    console.log("MOVING RIGHT");
+    console.log("MOVING " + direction);
     var imgBlob = imageStack.pop();
     var alreadyLast = false;
 
     var currentSpec = imageSpecsStack.pop();
     if (typeof currentSpec !== 'undefined') {
       let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceX2 - MOVECONSTANT_RL > 1) {
-        newSpec.sliceX1 += MOVECONSTANT_RL;
-        newSpec.sliceX2 -= MOVECONSTANT_RL;
-        console.log('currentSpec.sliceX1 = ' + currentSpec.sliceX1 + ',    newSpec.sliceX1 = ' + newSpec.sliceX1);
-      } else if (newSpec.sliceX2 != 1){
-        newSpec.sliceX1 += currentSpec.sliceX2;
-        newSpec.sliceX2 = 1;
-      } else {
-        alreadyLast = true;
+
+
+      switch(direction) {
+        case 'L':
+          if (newSpec.sliceX1 - MOVECONSTANT_RL > 1) {
+            newSpec.sliceX1 -= MOVECONSTANT_RL;
+            newSpec.sliceX2 += MOVECONSTANT_RL;
+          } else if (newSpec.sliceX1 != 1){
+            newSpec.sliceX2 += currentSpec.sliceX1;
+            newSpec.sliceX1 = 1;
+          } else {
+            alreadyLast = true;
+          }
+          break;
+
+        case 'R':
+          if (newSpec.sliceX2 - MOVECONSTANT_RL > 1) {
+            newSpec.sliceX1 += MOVECONSTANT_RL;
+            newSpec.sliceX2 -= MOVECONSTANT_RL;
+            console.log('currentSpec.sliceX1 = ' + currentSpec.sliceX1 + ',    newSpec.sliceX1 = ' + newSpec.sliceX1);
+          } else if (newSpec.sliceX2 != 1){
+            newSpec.sliceX1 += currentSpec.sliceX2;
+            newSpec.sliceX2 = 1;
+          } else {
+            alreadyLast = true;
+          }
+          break;
+
+          case 'D':
+            if (newSpec.sliceY2 - MOVECONSTANT_UD > 1) {
+              newSpec.sliceY1 += MOVECONSTANT_UD;
+              newSpec.sliceY2 -= MOVECONSTANT_UD;
+            } else if (newSpec.sliceY2 != 1){
+              newSpec.sliceY1 += currentSpec.sliceY2;
+              newSpec.sliceY2 = 1;
+            } else {
+              alreadyLast = true;
+            }
+            break;
+
+          case 'U':
+            if (newSpec.sliceY1 - MOVECONSTANT_UD > 1) {
+              newSpec.sliceY1 -= MOVECONSTANT_UD;
+              newSpec.sliceY2 += MOVECONSTANT_UD;
+            } else if (newSpec.sliceY1 != 1){
+              newSpec.sliceY2 += currentSpec.sliceY1;
+              newSpec.sliceY1 = 1;
+            } else {
+              alreadyLast = true;
+            }
+          break;
       }
 
-      if (!alreadyLast) {
-
-
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(coords2);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        MOVING = false;
-        imageSpecsStack.push(currentSpec);
-        alert("Cannot move any more");
-      }
-    } else {
-      imageSpecsStack.push(currentSpec);
-      MOVING = false;
-    }
-
-  }
-}
-
-function moveDown() {
-  MOVING = true;
-
-  if (img.src != OGIMAGEURL){
-    console.log("MOVING DOWN");
-    var imgBlob = imageStack.pop();
-    var alreadyLast = false;
-
-    var currentSpec = imageSpecsStack.pop();
-    if (typeof currentSpec !== 'undefined') {
-      let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceY2 - MOVECONSTANT_UD > 1) {
-        newSpec.sliceY1 += MOVECONSTANT_UD;
-        newSpec.sliceY2 -= MOVECONSTANT_UD;
-      } else if (newSpec.sliceY2 != 1){
-        newSpec.sliceY1 += currentSpec.sliceY2;
-        newSpec.sliceY2 = 1;
-      } else {
-        alreadyLast = true;
-      }
-
-      if (!alreadyLast) {
-
-
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(coords2);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        MOVING = false;
-        imageSpecsStack.push(currentSpec);
-        alert("Cannot move any more");
-      }
-    } else {
-      MOVING = false;
-      imageSpecsStack.push(currentSpec);
-    }
-
-  }
-}
-
-function moveLeft() {
-  MOVING = true;
-  if (img.src != OGIMAGEURL){
-    console.log("MOVING LEFT");
-    var imgBlob = imageStack.pop();
-    var alreadyLast = false;
-
-    var currentSpec = imageSpecsStack.pop();
-    if (typeof currentSpec !== 'undefined') {
-      let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceX1 - MOVECONSTANT_RL > 1) {
-        newSpec.sliceX1 -= MOVECONSTANT_RL;
-        newSpec.sliceX2 += MOVECONSTANT_RL;
-      } else if (newSpec.sliceX1 != 1){
-        newSpec.sliceX2 += currentSpec.sliceX1;
-        newSpec.sliceX1 = 1;
-      } else {
-        alreadyLast = true;
-      }
-
-      if (!alreadyLast) {
-
-
-        var coords2 = {};
-        coords2.boxWidth = portWidth;
-        coords2.boxHeight = portHeight;
-        coords2.wWidth = portWidth;
-        coords2.wHeight = portHeight
-        coords2.wZoomScale = newSpec.wZoomScale
-        coords2.hZoomScale = newSpec.hZoomScale;
-        coords2.sliceX1 = newSpec.sliceX1;
-        coords2.sliceX2 = newSpec.sliceX2
-        coords2.sliceY1 = newSpec.sliceY1;
-        coords2.sliceY2 = newSpec.sliceY2
-        imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(coords2);
-        imageStack.push(imgBlob);
-        drawpage(coords2);
-      } else {
-        imageSpecsStack.push(currentSpec);
-        MOVING = false;
-        alert("Cannot move any more");
-      }
-    } else {
-      MOVING = false;
-      imageSpecsStack.push(currentSpec);
-    }
-
-  }
-}
-
-function moveUp() {
-  MOVING = true;
-  if (img.src != OGIMAGEURL){
-    console.log("MOVING UP");
-    var imgBlob = imageStack.pop();
-    var alreadyLast = false;
-
-    var currentSpec = imageSpecsStack.pop();
-    if (typeof currentSpec !== 'undefined') {
-      let newSpec = Object.assign({}, currentSpec);
-      if (newSpec.sliceY1 - MOVECONSTANT_UD > 1) {
-        newSpec.sliceY1 -= MOVECONSTANT_UD;
-        newSpec.sliceY2 += MOVECONSTANT_UD;
-      } else if (newSpec.sliceY1 != 1){
-        newSpec.sliceY2 += currentSpec.sliceY1;
-        newSpec.sliceY1 = 1;
-      } else {
-        alreadyLast = true;
-      }
 
       if (!alreadyLast) {
 

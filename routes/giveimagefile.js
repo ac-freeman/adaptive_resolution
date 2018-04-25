@@ -95,9 +95,6 @@ router.post('/', function(req, res) {
     var wWidth = req.body.wWidth;
     var wHeight = req.body.wHeight;
 
-    var wZoomScale = req.body.wZoomScale;
-    var hZoomScale = req.body.hZoomScale;
-
     var sliceX1 = req.body.sliceX1;
     var sliceX2 = req.body.sliceX2;
 
