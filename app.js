@@ -47,7 +47,15 @@ var app = express();
         imagesrc = path.join( __dirname, '/public', 'images', 'IMG_9191_stitch.jpg');
         img = nj.images.read(imagesrc);
          app.set('image7', img);
-
+         imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8661_stitch.jpg');
+         img = nj.images.read(imagesrc);
+          app.set('image8', img);
+          imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5281-2_01.jpg');
+          img = nj.images.read(imagesrc);
+           app.set('image9', img);
+           imagesrc = path.join( __dirname, '/public', 'images', 'IMG_3373_stitch-4.jpg');
+           img = nj.images.read(imagesrc);
+            app.set('image10', img);
   console.log('DONE READING IMAGES');
 
 // view engine setup
@@ -102,6 +110,16 @@ app.get('/original/image6', function(req, res) {
 app.get('/original/image7', function(req, res) {
   res.sendFile(path.join(__dirname,'/public/images/IMG_9191_stitch.jpg'))
 });
+app.get('/original/image8', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_8661_stitch.jpg'))
+});
+app.get('/original/image9', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_5281-2_01.jpg'))
+});
+app.get('/original/image10', function(req, res) {
+  res.sendFile(path.join(__dirname,'/public/images/IMG_3373_stitch-4.jpg'))
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

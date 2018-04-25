@@ -429,11 +429,12 @@ function moveRight() {
         coords2.sliceY1 = newSpec.sliceY1;
         coords2.sliceY2 = newSpec.sliceY2
         imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
+        imageSpecsStack.push(coords2);
         imageStack.push(imgBlob);
         drawpage(coords2);
       } else {
         MOVING = false;
+        imageSpecsStack.push(currentSpec);
         alert("Cannot move any more");
       }
     } else {
@@ -480,11 +481,12 @@ function moveDown() {
         coords2.sliceY1 = newSpec.sliceY1;
         coords2.sliceY2 = newSpec.sliceY2
         imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
+        imageSpecsStack.push(coords2);
         imageStack.push(imgBlob);
         drawpage(coords2);
       } else {
         MOVING = false;
+        imageSpecsStack.push(currentSpec);
         alert("Cannot move any more");
       }
     } else {
@@ -530,10 +532,11 @@ function moveLeft() {
         coords2.sliceY1 = newSpec.sliceY1;
         coords2.sliceY2 = newSpec.sliceY2
         imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
+        imageSpecsStack.push(coords2);
         imageStack.push(imgBlob);
         drawpage(coords2);
       } else {
+        imageSpecsStack.push(currentSpec);
         MOVING = false;
         alert("Cannot move any more");
       }
@@ -580,10 +583,11 @@ function moveUp() {
         coords2.sliceY1 = newSpec.sliceY1;
         coords2.sliceY2 = newSpec.sliceY2
         imageSpecsStack.push(currentSpec);
-        imageSpecsStack.push(newSpec);
+        imageSpecsStack.push(coords2);
         imageStack.push(imgBlob);
         drawpage(coords2);
       } else {
+        imageSpecsStack.push(currentSpec);
         MOVING = false;
         alert("Cannot move any more");
       }
