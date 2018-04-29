@@ -150,14 +150,16 @@ function drawpage(coords){
     if (this.status == 200) {
       var blob = this.response;
 
+
       if (typeof OGIMAGEURL === 'undefined') {
+        //request the full scaled image
         OGIMAGEURL = window.URL.createObjectURL(blob);
         fullImg.src = OGIMAGEURL;
       } else {
+        //request a cropped image
         imageStack.push(img.src);
         fullImg.src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         img.src = window.URL.createObjectURL(blob);
-
       }
       TOTALBANDWIDTH += blob.size;
       console.log('TOTAL BANDWIDTH = ' + TOTALBANDWIDTH);
@@ -168,7 +170,7 @@ function drawpage(coords){
       }
       else {
         bandwidth = Math.round(bandwidth*100)/100;
-        document.getElementById('bandwidthText').innerHTML = "Total image bandwidth: " + bandwidth + "kB";
+        document.getElementById('bandwidthText').innerHTML = "Total image bandwidth: " + bandwidth + "KB";
 }
       console.log("Image loaded");
       MOVING = false;
