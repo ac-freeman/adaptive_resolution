@@ -148,6 +148,7 @@ function handleStart(evt) {
   }
 }
 var prevXdistance = 0;
+var prevYdistance = 0;
 function handleMove(evt) {
   evt.preventDefault(); //prevent click events from firing also
   console.log("touchmove.");
@@ -176,24 +177,45 @@ function handleMove(evt) {
     }
 
 
-    var whratio = img.width / img.height;
-    var newXdistance = Math.abs(touchesStack[0].clientX - touchesStack[1].clientX);
 
+    var newXdistance = Math.abs(touchesStack[0].clientX - touchesStack[1].clientX);
+    var newYdistance = Math.abs(touchesStack[0].clientY - touchesStack[1].clientY);
+    var oldheight = img.height;
+    var oldwidth = img.width;
+    var newWidth = oldwidth;
+    var newHeight = oldheight;
     if (prevXdistance == 0) {
       prevXdistance = newXdistance;
     }
     else  {  //horizontal zoom in
+        var whratio = oldwidth / oldheight;
         console.log("currentwidth = " +img.style.width);
-        console.log("currentwidth = " +img.width);
+        console.log("currentwidth = " + oldwidth);
         // var newWidth = img.width + Math.abs(x1move) + Math.abs(x2move);
-        var newWidth = img.width + (newXdistance - prevXdistance);
-        var newHeight = parseInt(newWidth / whratio);
-        img.style.width = newWidth + 'px';
-        img.style.height = newHeight;
+        newWidth = oldwidth + (newXdistance - prevXdistance);
+        newHeight = parseInt(newWidth / whratio);
+        // img.style.width = newWidth + 'px';
+        // img.style.height = newHeight;
         console.log("NEW WIDTH = " + newWidth + ",   NEW HEIGHT = " + newHeight);
         prevXdistance = newXdistance;
     }
 
+
+    if (prevYdistance == 0) {
+      prevYdistance = newYdistance;
+    }
+    else  {  //vertical zoom in
+        var hwratio = oldheight / oldwidth;
+        console.log("currentwidth = " +img.style.width);
+        console.log("currentwidth = " +oldwidth);
+        // var newWidth = img.width + Math.abs(x1move) + Math.abs(x2move);
+        newHeight = newHeight + (newYdistance - prevYdistance);
+        newWidth = parseInt(newHeight / hwratio);
+        img.style.height = newHeight + 'px';
+        img.style.width = newWidth;
+        console.log("NEW WIDTH = " + newWidth + ",   NEW HEIGHT = " + newHeight);
+        prevYdistance = newYdistance;
+    }
 
   }
 }
@@ -212,6 +234,7 @@ function handleEnd(evt) {
     console.log("touchend:" + i + ".");
   }
   prevXdistance = 0;
+  prevYdistance = 0;
 }
 
 function handleCancel(evt) {
