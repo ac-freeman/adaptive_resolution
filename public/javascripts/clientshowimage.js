@@ -17,6 +17,8 @@ var MOVECONSTANT_UD = parseInt(portHeight/2);
 var MOVERATIO = 2;
 var imageStack = [];
 var imageSpecsStack = [];
+var touchesStack = [];
+var lastZoomDistance = 0;
 imageSpecsStack.push(imageSpecs);
 var img;
 var fullImg;
@@ -115,10 +117,133 @@ function getImageShape() {
       drawpage({});
     }
   };
+
+  var el = document.getElementById('canvas2');
+  el.addEventListener("touchstart", handleStart, false);
+  el.addEventListener("touchmove", handleMove);
+  el.addEventListener("touchend", handleEnd);
+  el.addEventListener("touchcancel", handleCancel);
+
+
+
+
   xhttp.open("GET", "/../getimageshape/"+imageId, true);
 
   xhttp.send();
 }
+
+function handleStart(evt) {
+  evt.preventDefault(); //prevent click events from firing also
+  console.log("touchstart.");
+  var el = document.getElementById('canvas2');
+  // var ctx = el.getContext('2d');
+  var touches = evt.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+    console.log("touchstart:" + i + "..." + touches[i].clientX +", " + touches[i].clientY);
+    touchesStack.push(copyTouch(touches[i]));
+    console.log("num touches = " + touchesStack.length);
+
+    // console.log("touchstart:" + i + ".");
+  }
+}
+var prevXdistance = 0;
+function handleMove(evt) {
+  evt.preventDefault(); //prevent click events from firing also
+  console.log("touchmove.");
+  var el = document.getElementById('canvas2');
+  // var ctx = el.getContext('2d');
+  var touches = evt.changedTouches;
+
+
+
+  if (touchesStack.length == 2) {
+    //two-finger gesture, check for zoom
+
+    for (var i = 0; i < touches.length; i++) {
+      var idx = ongoingTouchIndexById(touches[i].identifier);
+      console.log(touches[i].clientX);
+      console.log(touchesStack[idx].clientX);
+      touchesStack.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+    }
+
+    var img;
+    var currentImage = document.getElementById('currentImage');
+    if (currentImage.src == "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=") {
+      img = document.getElementById('fullImage'); //we are on the full image still
+    } else {
+      img = currentImage;
+    }
+
+
+    var whratio = img.width / img.height;
+    var newXdistance = Math.abs(touchesStack[0].clientX - touchesStack[1].clientX);
+
+    if (prevXdistance == 0) {
+      prevXdistance = newXdistance;
+    }
+    else  {  //horizontal zoom in
+        console.log("currentwidth = " +img.style.width);
+        console.log("currentwidth = " +img.width);
+        // var newWidth = img.width + Math.abs(x1move) + Math.abs(x2move);
+        var newWidth = img.width + (newXdistance - prevXdistance);
+        var newHeight = parseInt(newWidth / whratio);
+        img.style.width = newWidth + 'px';
+        img.style.height = newHeight;
+        console.log("NEW WIDTH = " + newWidth + ",   NEW HEIGHT = " + newHeight);
+        prevXdistance = newXdistance;
+    }
+
+
+  }
+}
+function handleEnd(evt) {
+  evt.preventDefault(); //prevent click events from firing also
+  console.log("touchend.");
+  var el = document.getElementById('canvas2');
+  // var ctx = el.getContext('2d');
+  var touches = evt.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+    console.log("touchend:" + i + "...");
+    // ongoingTouches.push(copyTouch(touches[i]));
+    var idx = ongoingTouchIndexById(touches[i].identifier);
+    touchesStack.splice(idx, 1);  // remove from stack
+    console.log("touchend:" + i + ".");
+  }
+  prevXdistance = 0;
+}
+
+function handleCancel(evt) {
+  evt.preventDefault(); //prevent click events from firing also
+  console.log("touchcancel.");
+  var el = document.getElementById('canvas2');
+  // var ctx = el.getContext('2d');
+  var touches = evt.changedTouches;
+
+  for (var i = 0; i < touches.length; i++) {
+    console.log("touchcancel:" + i + "...");
+    // ongoingTouches.push(copyTouch(touches[i]));
+    console.log("touchcancel:" + i + ".");
+  }
+}
+
+function copyTouch(touch) {
+  return { identifier: touch.identifier, pageX: touch.pageX, pageY: touch.pageY, clientX: touch.clientX, clientY: touch.clientY};
+}
+
+function ongoingTouchIndexById(idToFind) {
+  for (var i = 0; i < touchesStack.length; i++) {
+    var id = touchesStack[i].identifier;
+
+    if (id == idToFind) {
+      return i;
+    }
+  }
+  return -1;    // not found
+}
+
+/////////////////////////////////////////////
 
 function drawpage(coords){
 
@@ -171,7 +296,7 @@ function drawpage(coords){
       else {
         bandwidth = Math.round(bandwidth*100)/100;
         document.getElementById('bandwidthText').innerHTML = "Total image bandwidth: " + bandwidth + "KB";
-}
+      }
       console.log("Image loaded");
       MOVING = false;
     }
