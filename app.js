@@ -22,41 +22,22 @@ var getimageshape = require('./routes/getimageshape');
 
 var app = express();
 
+console.log("ABOUT TO READ IMAGES");
+var dir = path.join( __dirname, '/public', 'images');
+fs.readdir(dir, function(err, filenames) {
+  if (err) {
+    onError(err);
+    return;
+  }
+  var imgCount = 1;
+  filenames.forEach(function(filename) {
+    var img = nj.images.read(path.join(dir,filename));
+    app.set('image'+imgCount, img);
+    imgCount++;
+  });
+});
 
-
-
-  console.log("ABOUT TO READ IMAGES");
-  var imagesrc = path.join( __dirname, '/public', 'images', 'IMG_4003_stitch.jpg');
-  var img = nj.images.read(imagesrc);
-   app.set('image1', img);
-   imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7682.jpg');
-   img = nj.images.read(imagesrc);
-    app.set('image2', img);
-    imagesrc = path.join( __dirname, '/public', 'images', 'IMG_7853-HDR.jpg');
-    img = nj.images.read(imagesrc);
-     app.set('image3', img);
-     imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8714_stitch.jpg');
-     img = nj.images.read(imagesrc);
-      app.set('image4', img);
-      imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5813.jpg');
-      img = nj.images.read(imagesrc);
-       app.set('image5', img);
-       imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8843.jpg');
-       img = nj.images.read(imagesrc);
-        app.set('image6', img);
-        imagesrc = path.join( __dirname, '/public', 'images', 'IMG_9191_stitch.jpg');
-        img = nj.images.read(imagesrc);
-         app.set('image7', img);
-         imagesrc = path.join( __dirname, '/public', 'images', 'IMG_8661_stitch.jpg');
-         img = nj.images.read(imagesrc);
-          app.set('image8', img);
-          imagesrc = path.join( __dirname, '/public', 'images', 'IMG_5281-2_01.jpg');
-          img = nj.images.read(imagesrc);
-           app.set('image9', img);
-           imagesrc = path.join( __dirname, '/public', 'images', 'IMG_3373_stitch-4.jpg');
-           img = nj.images.read(imagesrc);
-            app.set('image10', img);
-  console.log('DONE READING IMAGES');
+console.log('DONE READING IMAGES');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -87,37 +68,26 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-
-
-app.get('/original/image1', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_4003_stitch.jpg'))
-});
-app.get('/original/image2', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_7682.jpg'))
-});
-app.get('/original/image3', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_7853-HDR.jpg'))
-});
-app.get('/original/image4', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_8714_stitch.jpg'))
-});
-app.get('/original/image5', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_5813.jpg'))
-});
-app.get('/original/image6', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_8843.jpg'))
-});
-app.get('/original/image7', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_9191_stitch.jpg'))
-});
-app.get('/original/image8', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_8661_stitch.jpg'))
-});
-app.get('/original/image9', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_5281-2_01.jpg'))
-});
-app.get('/original/image10', function(req, res) {
-  res.sendFile(path.join(__dirname,'/public/images/IMG_3373_stitch-4.jpg'))
+app.get('/original/image*', function(req, res) {
+  var dir = path.join( __dirname, '/public', 'images');
+  var sent = false;
+  fs.readdir(dir, function(err, filenames) {
+    if (err) {
+      onError(err);
+      return;
+    }
+    var imgCount = 1;
+    filenames.forEach(function(filename) {
+      if('/original/image'+imgCount == req.url) {
+        res.sendFile(path.join(dir,filename));
+        sent = true;
+      }
+      imgCount++;
+    });
+    if (!sent)
+      res.status(404).send('Not found');
+  });
+  
 });
 
 // catch 404 and forward to error handler
